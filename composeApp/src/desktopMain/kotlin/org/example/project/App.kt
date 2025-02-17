@@ -5,8 +5,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.ktor.client.request.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.example.project.api.data.network.KtorClient
 import org.example.project.core.ui.components.ExitButton
 import org.example.project.core.ui.components.SwitchTmr
+import org.example.project.core.utils.constant.Constants.VERSION
 import org.example.project.main_window.shutdown_timer.ShutdownTimer
 import org.example.project.main_window.work_timer.WorkTimer
 
@@ -31,6 +37,15 @@ fun App(closeApp: () -> Unit) {
         if (state) {
             WorkTimer(modifier = Modifier.size(250.dp))
         } else {
+
+            val scope = CoroutineScope(Dispatchers.IO)
+            val client = KtorClient.client
+            scope.launch {
+                client.get("$VERSION/forecast?latitude=55.75&longitude=37.61&current_weather=true")
+                client.close()
+            }
+
+
             ShutdownTimer(
                 modifier = Modifier.size(250.dp),
                 totalTime = 3600L * 1000L,
