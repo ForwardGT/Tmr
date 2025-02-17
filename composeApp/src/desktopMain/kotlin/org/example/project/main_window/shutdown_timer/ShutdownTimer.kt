@@ -87,7 +87,7 @@ fun ShutdownTimer(
                 isTimerRunning = isTimerRunning,
                 currentTime = currentTime.toInt(),
                 onClickRightButton = {
-                    currentTime = totalTime;
+                    currentTime = totalTime
                     value = initialValue
                 },
                 onClickLeftButton = {
