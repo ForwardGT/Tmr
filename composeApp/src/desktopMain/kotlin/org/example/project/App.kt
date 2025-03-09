@@ -29,10 +29,18 @@ fun App(closeApp: () -> Unit) {
         val store: TmrStore = koinViewModel()
         val state by store.state.collectAsState()
 
+        Row(
+            modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            SwitchTmr(state = state.isTimer) { store.switchTimer(it) }
+            ExitButton(closeApp)
+        }
+
         Column(
             modifier = Modifier
-            .fillMaxWidth()
-            .align(Alignment.TopCenter)
+                .fillMaxWidth()
+                .align(Alignment.TopCenter)
         ) {
             Spacer(modifier = Modifier.padding(top = 110.dp))
             val url = "$BASE_URL_IMAGE${state.weather.iconCode}@2x.png"
@@ -51,20 +59,20 @@ fun App(closeApp: () -> Unit) {
 
                 Text(
                     modifier = Modifier.padding(top = 22.dp),
-                    text = "${state.weather.windSpeed}m/s",
+                    text = "${state.weather.windSpeed} m/s",
                     fontSize = 20.sp,
                     color = TmrColors.mainText,
                 )
             }
         }
 
-        Row(
-            modifier = Modifier.fillMaxWidth().align(Alignment.TopCenter),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            SwitchTmr(state = state.isTimer) { store.switchTimer(it) }
-            ExitButton(closeApp)
-        }
+        Text(
+            modifier = Modifier.align(Alignment.TopCenter).padding(top = 60.dp),
+            text = "Last update ${state.weather.lastUpdate}",
+            fontSize = 16.sp,
+            color = TmrColors.mainText.copy(alpha = .3f),
+        )
+
         Box {
             if (state.isTimer) WorkTimer(modifier = Modifier.size(250.dp))
             else ShutdownTimer(modifier = Modifier.size(250.dp), totalTime = 3600L * 1000L)
