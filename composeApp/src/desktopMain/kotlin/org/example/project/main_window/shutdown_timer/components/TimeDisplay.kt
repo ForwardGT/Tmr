@@ -13,7 +13,6 @@ fun TimeDisplay(
     valueSecond: Int,
     modifier: Modifier = Modifier,
 ) {
-
     val hours = valueSecond / 3600
     val minutes = (valueSecond % 3600) / 60
     val seconds = valueSecond % 60

@@ -1,7 +1,8 @@
 package org.example.project.main_window.work_timer
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,19 +63,18 @@ fun WorkTimer(
                 }
             },
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .fillMaxSize(),
+
+        TimeDisplay(
+            modifier = Modifier.padding(bottom = 50.dp).align(Alignment.Center),
+            valueSecond = currentTime,
+        )
+
+        Box(
+            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 52.dp),
         ) {
-            Spacer(modifier = Modifier.fillMaxHeight(.35f))
-            TimeDisplay(currentTime)
-
-            Spacer(modifier = Modifier.padding(top = 26.dp))
             DoubleButtons(
-
                 onClickLeftButton = { isTimerRunning = !isTimerRunning },
-                onClickRightButton = { currentTime = 0 ; activeIndex = 15 },
+                onClickRightButton = { currentTime = 0; activeIndex = 15 },
                 isTimerRunning = isTimerRunning,
                 currentTime = currentTime,
             )
