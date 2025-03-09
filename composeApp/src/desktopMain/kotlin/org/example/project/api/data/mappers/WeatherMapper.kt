@@ -5,11 +5,12 @@ import org.example.project.api.data.responses.WeatherResponse
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import kotlin.math.roundToInt
 
 fun WeatherResponse.toData(): Weather {
     return Weather(
-        windSpeed = this.wind?.speed?.toInt().toString(),
-        temperature = this.main?.temp?.toInt().toString(),
+        windSpeed = this.wind?.speed?.roundToInt().toString(),
+        temperature = this.main?.temp?.roundToInt().toString(),
         iconCode = this.weather?.firstOrNull()?.icon.orEmpty(),
         lastUpdate = this.dt?.toTime().orEmpty()
     )
