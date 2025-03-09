@@ -9,6 +9,11 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 
 fun main() = application {
+
+    System.setProperty("skiko.renderApi", "OPENGL")
+
+    KoinTmr.initKoin()
+
     val state = rememberWindowState(size = DpSize(250.dp, 250.dp))
 
     Window(

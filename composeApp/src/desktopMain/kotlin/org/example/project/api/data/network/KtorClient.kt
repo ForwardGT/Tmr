@@ -8,7 +8,7 @@ import io.ktor.client.plugins.logging.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
-import org.example.project.core.utils.constant.Constants.BASE_URL_OPEN_METEO
+import org.example.project.core.utils.constant.Constants.BASE_URL_API
 
 object KtorClient {
     val client = HttpClient(CIO) {
@@ -29,7 +29,8 @@ object KtorClient {
 
         install(DefaultRequest) {
             url {
-                host = BASE_URL_OPEN_METEO
+                host = BASE_URL_API
+                encodedPath = "/data/2.5/"
                 protocol = URLProtocol.HTTPS
             }
         }
