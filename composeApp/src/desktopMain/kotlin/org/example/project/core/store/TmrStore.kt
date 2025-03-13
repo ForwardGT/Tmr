@@ -10,8 +10,8 @@ import org.example.project.api.data.models.Weather
 import org.example.project.api.data.repository.TmrRepository
 
 data class TmrState(
-    val isTimer: Boolean = false,
-    val weather: Weather = Weather()
+    val weather: Weather = Weather(),
+    val typeTimer: TypeTimer = TypeTimer.WorkTimer,
 )
 
 class TmrStore(private val repo: TmrRepository) : ViewModel() {
@@ -23,8 +23,15 @@ class TmrStore(private val repo: TmrRepository) : ViewModel() {
         getWeather()
     }
 
-    fun switchTimer(value: Boolean) {
-        _state.reduce { copy(isTimer = value) }
+    fun switchTimer(type: TypeTimer) {
+        _state.reduce {
+            copy(
+                typeTimer = when (type) {
+                    TypeTimer.WorkTimer -> TypeTimer.WorkTimer
+                    TypeTimer.ShutdownTimer -> TypeTimer.ShutdownTimer
+                }
+            )
+        }
     }
 
     private fun getWeather() {
@@ -32,7 +39,7 @@ class TmrStore(private val repo: TmrRepository) : ViewModel() {
             while (true) {
                 val weather = repo.getWeather()
                 _state.reduce { copy(weather = weather) }
-                delay(300000)
+                delay(600000)
             }
         }
     }
@@ -40,4 +47,8 @@ class TmrStore(private val repo: TmrRepository) : ViewModel() {
 
 private fun <T> MutableStateFlow<T>.reduce(transform: T.() -> T) {
     value = value.transform()
+}
+
+enum class TypeTimer {
+    WorkTimer, ShutdownTimer
 }

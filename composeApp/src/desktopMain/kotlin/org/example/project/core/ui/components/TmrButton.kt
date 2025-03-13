@@ -26,39 +26,41 @@ fun TmrButton(
     modifier: Modifier = Modifier,
     text: String,
     onClick: () -> Unit,
-    colorGradient: List<Color> = TmrColors.defaultButtonGradient,
-    isIcon: Boolean = false,
-    resourcePath: String = "",
+    colorGradientBackground: List<Color> = TmrColors.defaultButtonGradient,
+    colorText: Color = TmrColors.mainText,
+    colorIcon: Color = TmrColors.mainText,
+    iconResourcePath: String = "",
     isExitButton: Boolean = false,
 ) {
     val gradient = Brush.linearGradient(
-        colors = colorGradient,
+        colors = colorGradientBackground,
         start = Offset(0f, 0f),
         end = Offset(300f, 0f),
     )
     val shape = RoundedCornerShape(12.dp)
 
     Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
             .clip(shape)
             .background(gradient)
             .clickable(onClick = onClick)
             .then(if (!isExitButton) Modifier.padding(vertical = 8.dp, horizontal = 18.dp) else Modifier)
     ) {
-        if (!isIcon) {
+        if (iconResourcePath.isBlank()) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
                 text = text,
-                color = TmrColors.mainText,
+                color = colorText,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
             )
         } else {
             Icon(
                 contentDescription = null,
-                painter = painterResource(resourcePath),
+                painter = painterResource(iconResourcePath),
                 modifier = Modifier.size(21.dp),
-                tint = TmrColors.mainText
+                tint = colorIcon
             )
         }
     }

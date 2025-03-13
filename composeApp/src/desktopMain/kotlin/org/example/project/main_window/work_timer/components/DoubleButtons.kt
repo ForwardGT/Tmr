@@ -22,10 +22,15 @@ fun DoubleButtons(
     Row(modifier = modifier) {
         TmrButton(
             onClick = { onClickLeftButton() },
-            colorGradient = colorGradient,
+            colorGradientBackground = colorGradient,
             text = when {
                 isTimerRunning -> "Stop"
-                currentTime >= 0 -> "Start"
+                currentTime >= 0 -> "Go"
+                else -> ""
+            },
+            iconResourcePath = when {
+                isTimerRunning -> "pause_timer.svg"
+                currentTime >= 0 -> "start_timer.svg"
                 else -> ""
             }
         )
@@ -33,8 +38,7 @@ fun DoubleButtons(
         TmrButton(
             onClick = { onClickRightButton() },
             text = "",
-            isIcon = true,
-            resourcePath = "timeClear.svg",
+            iconResourcePath = "timeClear.svg",
         )
     }
 }
