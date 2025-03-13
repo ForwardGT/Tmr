@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.project.api.RemoteImage
+import org.example.project.core.utils.RemoteImage
 import org.example.project.core.store.TmrState
 import org.example.project.core.store.TmrStore
 import org.example.project.core.store.TypeTimer
