@@ -3,29 +3,24 @@ package org.example.project
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.project.core.utils.RemoteImage
-import org.example.project.core.store.TmrState
-import org.example.project.core.store.TmrStore
-import org.example.project.core.store.TypeTimer
 import org.example.project.core.ui.components.ExitButton
 import org.example.project.core.ui.components.TmrModeSwitchButton
 import org.example.project.core.ui.resourses.TmrColors
+import org.example.project.core.utils.RemoteImage
 import org.example.project.core.utils.constant.Constants.BASE_URL_IMAGE
 import org.example.project.main_window.shutdown_timer.ShutdownTimer
 import org.example.project.main_window.work_timer.WorkTimer
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun App(closeApp: () -> Unit = {}) {
-    val store: TmrStore = koinViewModel()
-    val state by store.state.collectAsState()
-
+fun App(
+    closeApp: () -> Unit = {},
+    store: TmrStore,
+    state: TmrState,
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
@@ -66,13 +61,13 @@ private fun HeaderControlButton(
             TmrModeSwitchButton(
                 onClick = { onSwitch(it) },
                 typeTimer = TypeTimer.WorkTimer,
-                state = state,
+                activeButton = state.typeTimer,
             )
             Spacer(modifier = Modifier.width(4.dp))
             TmrModeSwitchButton(
                 onClick = { onSwitch(it) },
                 typeTimer = TypeTimer.ShutdownTimer,
-                state = state,
+                activeButton = state.typeTimer,
             )
         }
         ExitButton(closeApp)

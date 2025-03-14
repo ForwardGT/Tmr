@@ -1,5 +1,6 @@
-package org.example.project.core.store
+package org.example.project
 
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
@@ -7,11 +8,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.example.project.api.data.models.Weather
-import org.example.project.api.data.repository.TmrRepository
+import org.example.project.api.repository.TmrRepository
+import org.example.project.core.app_settiings.AppConfig
+import org.example.project.core.app_settiings.ConfigManager
 
 data class TmrState(
     val weather: Weather = Weather(),
     val typeTimer: TypeTimer = TypeTimer.WorkTimer,
+    val config: AppConfig? = null, // todo Придумать как реализовать без стэйта
 )
 
 class TmrStore(private val repo: TmrRepository) : ViewModel() {
@@ -20,6 +24,7 @@ class TmrStore(private val repo: TmrRepository) : ViewModel() {
     val state = _state.asStateFlow()
 
     init {
+        loadConfig()
         getWeather()
     }
 
@@ -31,6 +36,27 @@ class TmrStore(private val repo: TmrRepository) : ViewModel() {
                     TypeTimer.ShutdownTimer -> TypeTimer.ShutdownTimer
                 }
             )
+        }
+    }
+
+    fun saveConfig(windowPositionX: Float, windowPositionY: Float) {
+        val config = AppConfig(
+            windowPositionY = windowPositionY,
+            windowPositionX = windowPositionX,
+        )
+
+        viewModelScope.launch {
+            ConfigManager.saveConfig(config)
+        }
+    }
+
+    private fun loadConfig() {
+        viewModelScope.launch {
+            val config = ConfigManager.loadConfig()
+            println(config.windowPositionX.dp)
+            _state.reduce {
+                copy(config = config)
+            }
         }
     }
 

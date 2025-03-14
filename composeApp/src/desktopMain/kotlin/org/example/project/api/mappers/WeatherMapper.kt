@@ -1,4 +1,4 @@
-package org.example.project.api.data.mappers
+package org.example.project.api.mappers
 
 import org.example.project.api.data.models.Weather
 import org.example.project.api.data.responses.WeatherResponse

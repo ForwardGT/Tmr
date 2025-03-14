@@ -9,7 +9,6 @@ fun ExitButton(
     onClickExit: () -> Unit
 ) {
     TmrButton(
-//        modifier = Modifier.padding(end = 8.dp, top = 14.dp),
         text = "",
         onClick = onClickExit,
         isExitButton = true,
