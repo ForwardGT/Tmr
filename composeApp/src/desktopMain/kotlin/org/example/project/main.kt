@@ -3,21 +3,23 @@ package org.example.project
 import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import org.example.project.core.utils.setTaskbarIcon
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import org.koin.core.context.GlobalContext
+import tmr.composeapp.generated.resources.Res
+import tmr.composeapp.generated.resources.logo
 
+@OptIn(ExperimentalResourceApi::class)
 fun main() = application {
 
     System.setProperty("skiko.renderApi", "OPENGL")
-    setTaskbarIcon("logo.png")
 
     if (GlobalContext.getOrNull() == null) { TmrKoin.initKoin() }
 
@@ -25,6 +27,7 @@ fun main() = application {
     val state by store.state.collectAsState()
 
     val windowState = rememberWindowState(size = DpSize(250.dp, 250.dp))
+
     state.config?.also {
         windowState.position = WindowPosition(x = it.windowPositionX.dp, y = it.windowPositionY.dp)
     }
@@ -40,7 +43,7 @@ fun main() = application {
         alwaysOnTop = true,
         undecorated = true,
         transparent = true,
-        icon = painterResource("logo.png")
+        icon = painterResource(Res.drawable.logo)
     ) {
         WindowDraggableArea {
             App(closeApp = {

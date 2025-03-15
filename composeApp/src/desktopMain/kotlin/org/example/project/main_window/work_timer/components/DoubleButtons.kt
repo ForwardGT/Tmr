@@ -8,6 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.example.project.core.ui.components.TmrButton
 import org.example.project.core.ui.resourses.TmrColors
+import tmr.composeapp.generated.resources.Res
+import tmr.composeapp.generated.resources.pause_timer
+import tmr.composeapp.generated.resources.start_timer
+import tmr.composeapp.generated.resources.timeClear
 
 @Composable
 fun DoubleButtons(
@@ -23,22 +27,16 @@ fun DoubleButtons(
         TmrButton(
             onClick = { onClickLeftButton() },
             colorGradientBackground = colorGradient,
-            text = when {
-                isTimerRunning -> "Stop"
-                currentTime >= 0 -> "Go"
-                else -> ""
-            },
-            iconResourcePath = when {
-                isTimerRunning -> "pause_timer.svg"
-                currentTime >= 0 -> "start_timer.svg"
-                else -> ""
+            icon = when {
+                isTimerRunning -> Res.drawable.pause_timer
+                currentTime >= 0 -> Res.drawable.start_timer
+                else -> Res.drawable.start_timer
             }
         )
         Spacer(modifier = Modifier.padding(start = 10.dp))
         TmrButton(
             onClick = { onClickRightButton() },
-            text = "",
-            iconResourcePath = "timeClear.svg",
+            icon = Res.drawable.timeClear,
         )
     }
 }

@@ -15,21 +15,22 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.project.core.ui.resourses.TmrColors
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun TmrButton(
     modifier: Modifier = Modifier,
-    text: String,
+    text: String = "",
     onClick: () -> Unit,
     colorGradientBackground: List<Color> = TmrColors.defaultButtonGradient,
     colorText: Color = TmrColors.mainText,
     colorIcon: Color = TmrColors.mainText,
-    iconResourcePath: String = "",
+    icon: DrawableResource? = null,
     isExitButton: Boolean = false,
 ) {
     val gradient = Brush.linearGradient(
@@ -47,7 +48,7 @@ fun TmrButton(
             .clickable(onClick = onClick)
             .then(if (!isExitButton) Modifier.padding(vertical = 8.dp, horizontal = 18.dp) else Modifier)
     ) {
-        if (iconResourcePath.isBlank()) {
+        if (icon == null) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
                 text = text,
@@ -58,7 +59,7 @@ fun TmrButton(
         } else {
             Icon(
                 contentDescription = null,
-                painter = painterResource(iconResourcePath),
+                painter = painterResource(icon),
                 modifier = Modifier.size(21.dp),
                 tint = colorIcon
             )
