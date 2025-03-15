@@ -1,4 +1,4 @@
-package app.core.utils
+package app.core.utils.remote_image
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size

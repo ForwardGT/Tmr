@@ -9,34 +9,36 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import app.configurations.AppControl
 import app.core.di.TmrKoin
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import org.koin.core.context.GlobalContext
 import tmr.composeapp.generated.resources.Res
 import tmr.composeapp.generated.resources.logo
-import tmr.impl.windows.main_window.App
-import tmr.impl.windows.main_window.TmrStore
+import tmr.impl.windows.main_window.MainStore
+import tmr.impl.windows.main_window.MainView
 
 fun main() = application {
 
     System.setProperty("skiko.renderApi", "OPENGL")
 
-    if (GlobalContext.getOrNull() == null) { TmrKoin.initKoin() }
+    if (GlobalContext.getOrNull() == null) {
+        TmrKoin.initKoin(this)
+    }
 
-    val store: TmrStore = koinInject<TmrStore>()
+    val store = koinInject<MainStore>()
     val state by store.state.collectAsState()
 
-    val windowState = rememberWindowState(size = DpSize(250.dp, 250.dp))
+    val appControl = koinInject<AppControl>()
+    val config = appControl.loadConfig()
 
-    state.config?.also {
-        windowState.position = WindowPosition(x = it.windowPositionX.dp, y = it.windowPositionY.dp)
+    val windowState = rememberWindowState(size = DpSize(250.dp, 250.dp)).apply {
+        position = WindowPosition(config.windowPositionX.dp, config.windowPositionY.dp)
     }
 
     Window(
-        onCloseRequest = {
-            exitApplication()
-        },
+        onCloseRequest = { appControl.closeWindow(windowState) },
         title = "Tmr",
         state = windowState,
         resizable = false,
@@ -46,10 +48,11 @@ fun main() = application {
         icon = painterResource(Res.drawable.logo)
     ) {
         WindowDraggableArea {
-            App(closeApp = {
-                store.saveConfig(windowState.position.x.value, windowState.position.y.value)
-                exitApplication()
-            }, store, state)
+            MainView(
+                closeApp = { appControl.closeWindow(windowState) },
+                state = state,
+                store = store,
+            )
         }
     }
 }

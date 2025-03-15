@@ -1,4 +1,4 @@
-package app.core.configurations
+package app.configurations
 
 import kotlinx.serialization.Serializable
 

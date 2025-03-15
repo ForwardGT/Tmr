@@ -1,10 +1,8 @@
 package tmr.impl.mappers
 
+import app.core.utils.extensions.toTime
 import tmr.api.models.Weather
 import tmr.impl.data.responses.WeatherResponse
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 fun WeatherResponse.toData(): Weather {
@@ -14,10 +12,4 @@ fun WeatherResponse.toData(): Weather {
         iconCode = this.weather?.firstOrNull()?.icon.orEmpty(),
         lastUpdate = this.dt?.toTime().orEmpty()
     )
-}
-
-private fun Long.toTime(): String {
-    return DateTimeFormatter.ofPattern("HH:mm:ss")
-        .withZone(ZoneId.systemDefault())
-        .format(Instant.ofEpochSecond(this))
 }

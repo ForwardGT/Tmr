@@ -10,15 +10,15 @@ import androidx.compose.ui.unit.sp
 import app.core.ui.components.ExitButton
 import app.core.ui.components.TmrModeSwitchButton
 import app.core.ui.resourses.TmrColors
-import app.core.utils.RemoteImage
 import app.core.utils.constant.Constants.BASE_URL_IMAGE
+import app.core.utils.remote_image.RemoteImage
 import org.example.project.main_window.work_timer.WorkTimer
 import tmr.impl.windows.main_window.shutdown_timer.ShutdownTimer
 
 @Composable
-fun App(
+fun MainView(
     closeApp: () -> Unit = {},
-    store: TmrStore,
+    store: MainStore,
     state: TmrState,
 ) {
     Box(
@@ -100,6 +100,9 @@ private fun WeatherBlock(state: TmrState, modifier: Modifier = Modifier) {
             .padding(top = 110.dp),
     ) {
         val imageUrl = "$BASE_URL_IMAGE${state.weather.iconCode}@2x.png"
+
+        println("URI image weather: $imageUrl")
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,

@@ -2,32 +2,25 @@ package tmr.impl.windows.main_window
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.core.configurations.AppConfig
-import app.core.configurations.ConfigManager
+import app.core.utils.extensions.reduce
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import tmr.api.models.Weather
 import tmr.api.usecases.GetWeatherUseCase
-import tmr.api.usecases.SaveConfigurationsAppUseCase
 
 data class TmrState(
     val weather: Weather = Weather(),
     val typeTimer: TypeTimer = TypeTimer.WorkTimer,
-    val config: AppConfig? = null, // todo Придумать как реализовать без стэйта
 )
 
-class TmrStore(
-    private val getWeatherUseCase: GetWeatherUseCase,
-    private val saveConfigurationsAppUseCase: SaveConfigurationsAppUseCase,
-) : ViewModel() {
+class MainStore(private val getWeatherUseCase: GetWeatherUseCase) : ViewModel() {
 
     private val _state = MutableStateFlow(TmrState())
     val state = _state.asStateFlow()
 
     init {
-        loadConfig()
         getWeather()
     }
 
@@ -42,26 +35,6 @@ class TmrStore(
         }
     }
 
-    fun saveConfig(windowPositionX: Float, windowPositionY: Float) {
-        val config = AppConfig(
-            windowPositionY = windowPositionY,
-            windowPositionX = windowPositionX,
-        )
-
-        viewModelScope.launch {
-            ConfigManager.saveConfig(config)
-        }
-    }
-
-    private fun loadConfig() {
-        viewModelScope.launch {
-            val config = ConfigManager.loadConfig()
-            _state.reduce {
-                copy(config = config)
-            }
-        }
-    }
-
     private fun getWeather() {
         viewModelScope.launch {
             while (true) {
@@ -71,10 +44,6 @@ class TmrStore(
             }
         }
     }
-}
-
-private fun <T> MutableStateFlow<T>.reduce(transform: T.() -> T) {
-    value = value.transform()
 }
 
 enum class TypeTimer {
