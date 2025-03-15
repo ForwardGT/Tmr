@@ -1,6 +1,5 @@
 package tmr.impl.windows.main_window
 
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.core.configurations.AppConfig
@@ -10,7 +9,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import tmr.api.models.Weather
-import tmr.api.reposiroes.TmrRepository
+import tmr.api.usecases.GetWeatherUseCase
+import tmr.api.usecases.SaveConfigurationsAppUseCase
 
 data class TmrState(
     val weather: Weather = Weather(),
@@ -18,7 +18,10 @@ data class TmrState(
     val config: AppConfig? = null, // todo Придумать как реализовать без стэйта
 )
 
-class TmrStore(private val repo: TmrRepository) : ViewModel() {
+class TmrStore(
+    private val getWeatherUseCase: GetWeatherUseCase,
+    private val saveConfigurationsAppUseCase: SaveConfigurationsAppUseCase,
+) : ViewModel() {
 
     private val _state = MutableStateFlow(TmrState())
     val state = _state.asStateFlow()
@@ -53,7 +56,6 @@ class TmrStore(private val repo: TmrRepository) : ViewModel() {
     private fun loadConfig() {
         viewModelScope.launch {
             val config = ConfigManager.loadConfig()
-            println(config.windowPositionX.dp)
             _state.reduce {
                 copy(config = config)
             }
@@ -63,7 +65,7 @@ class TmrStore(private val repo: TmrRepository) : ViewModel() {
     private fun getWeather() {
         viewModelScope.launch {
             while (true) {
-                val weather = repo.getWeather()
+                val weather = getWeatherUseCase()
                 _state.reduce { copy(weather = weather) }
                 delay(600000)
             }

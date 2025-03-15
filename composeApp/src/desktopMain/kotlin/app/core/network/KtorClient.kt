@@ -1,5 +1,6 @@
-package app.core
+package app.core.network
 
+import app.core.utils.constant.Constants.BASE_URL_API
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
@@ -8,7 +9,6 @@ import io.ktor.client.plugins.logging.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
-import app.core.utils.constant.Constants.BASE_URL_API
 
 object KtorClient {
     val client = HttpClient(CIO) {

@@ -9,22 +9,20 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import tmr.impl.windows.main_window.App
-import app.core.TmrKoin
-import tmr.impl.windows.main_window.TmrStore
+import app.core.di.TmrKoin
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.koinInject
 import org.koin.core.context.GlobalContext
 import tmr.composeapp.generated.resources.Res
 import tmr.composeapp.generated.resources.logo
+import tmr.impl.windows.main_window.App
+import tmr.impl.windows.main_window.TmrStore
 
 fun main() = application {
 
     System.setProperty("skiko.renderApi", "OPENGL")
 
-    if (GlobalContext.getOrNull() == null) {
-        TmrKoin.initKoin()
-    }
+    if (GlobalContext.getOrNull() == null) { TmrKoin.initKoin() }
 
     val store: TmrStore = koinInject<TmrStore>()
     val state by store.state.collectAsState()
