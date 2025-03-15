@@ -42,11 +42,11 @@ kotlin {
 compose.desktop {
     application {
 
-        mainClass = "org.example.project.MainKt"
+        mainClass = "tmr.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Exe)
-            packageName = "org.example.project"
+            packageName = "tmr"
             packageVersion = "1.0.0"
             modules("java.desktop")
         }
