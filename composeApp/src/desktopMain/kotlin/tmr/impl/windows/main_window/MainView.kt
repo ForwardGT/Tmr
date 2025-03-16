@@ -98,7 +98,7 @@ private fun WeatherBlock(
     modifier: Modifier = Modifier,
     state: TmrState,
 ) {
-    val imageUrl = "$BASE_URL_IMAGE/02n@2x.png"
+    val imageUrl = "$BASE_URL_IMAGE/${state.weather.iconCode}@2x.png"
 
     Column(
         modifier = modifier
