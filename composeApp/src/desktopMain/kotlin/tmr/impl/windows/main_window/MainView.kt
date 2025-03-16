@@ -89,7 +89,7 @@ private fun LastUpdateText(lastUpdate: String, modifier: Modifier) {
 private fun TimerSection(typeTimer: TypeTimer) {
     when (typeTimer) {
         TypeTimer.WorkTimer -> WorkTimer(modifier = Modifier.size(250.dp))
-        TypeTimer.ShutdownTimer -> ShutdownTimer(modifier = Modifier.size(250.dp), totalTime = 3600L * 1000L)
+        TypeTimer.ShutdownTimer -> ShutdownTimer(modifier = Modifier.size(250.dp))
     }
 }
 
@@ -98,7 +98,7 @@ private fun WeatherBlock(
     modifier: Modifier = Modifier,
     state: TmrState,
 ) {
-    val imageUrl = "$BASE_URL_IMAGE${state.weather.iconCode}@2x.png"
+    val imageUrl = "$BASE_URL_IMAGE/02n@2x.png"
 
     Column(
         modifier = modifier

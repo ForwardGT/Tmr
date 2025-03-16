@@ -1,36 +1,35 @@
 package tmr.impl.windows.main_window.shutdown_timer
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import app.core.ui.components.DoubleButtons
 import app.core.ui.components.TimeDisplay
-import app.core.ui.components.TmrSpacer
+import app.core.ui.components.TmrButton
 import app.core.ui.resourses.TmrColors
+import app.core.ui.resourses.TmrColors.colorIconExit
 import kotlinx.coroutines.delay
+import tmr.composeapp.generated.resources.Res
+import tmr.composeapp.generated.resources.gear
+import tmr.impl.windows.main_window.shutdown_timer.components.TmrTextField
 
 @Composable
 fun ShutdownTimer(
     modifier: Modifier = Modifier,
-    totalTime: Long,
     initialValue: Float = 1f,
     strokeWidth: Dp = 5.dp,
 ) {
-    var size by remember { mutableStateOf(IntSize.Zero) }
-    var value by remember { mutableStateOf(initialValue) }
+    var totalTime by remember { mutableStateOf(3600L * 1000L) }
+    var isEdit by remember { mutableStateOf(false) }
     var currentTime by remember { mutableStateOf(totalTime) }
     var isTimerRunning by remember { mutableStateOf(false) }
+    var value by remember { mutableStateOf(initialValue) }
 
     LaunchedEffect(key1 = currentTime, key2 = isTimerRunning) {
         if (currentTime > 0 && isTimerRunning) {
@@ -45,61 +44,80 @@ fun ShutdownTimer(
             .start()
     }
 
-    TmrSpacer(height = 16.dp)
-
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(200.dp)
-                .onSizeChanged { size = it }
-        ) {
-            Canvas(modifier = Modifier.size(200.dp)) {
-                drawArc(
-                    color = TmrColors.inactiveComponent,
-                    startAngle = -215f,
-                    sweepAngle = 250f,
-                    useCenter = false,
-                    size = Size(size.width.toFloat(), size.height.toFloat()),
-                    style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
+
+        Canvas(modifier = Modifier.size(200.dp)) {
+            val size = size.copy(width = size.width, height = size.height)
+            drawArc(
+                color = TmrColors.inactiveComponent,
+                startAngle = -215f,
+                sweepAngle = 250f,
+                useCenter = false,
+                size = size,
+                style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
+            )
+            drawArc(
+                color = TmrColors.activeBar,
+                startAngle = -215f,
+                sweepAngle = 250f * value,
+                useCenter = false,
+                size = size,
+                style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
+            )
+        }
+
+        if (isEdit) {
+            Box(modifier = Modifier.padding(bottom = 50.dp)) {
+                TmrTextField { inputText ->
+                    totalTime = (inputText.toIntOrNull()?.times(60 * 1000L)) ?: totalTime
+                    currentTime = totalTime
+                    value = initialValue
+                    isEdit = false
+                }
+            }
+
+        } else {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(start = 14.dp)
+            ) {
+                TimeDisplay(
+                    modifier = Modifier.padding(bottom = 50.dp),
+                    valueSecond = (currentTime / 1000L).toInt()
                 )
-                drawArc(
-                    color = TmrColors.activeBar,
-                    startAngle = -215f,
-                    sweepAngle = 250f * value,
-                    useCenter = false,
-                    size = Size(size.width.toFloat(), size.height.toFloat()),
-                    style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
+
+                TmrButton(
+                    modifier = Modifier.size(14.dp),
+                    text = "",
+                    icon = Res.drawable.gear,
+                    onClick = { isEdit = !isEdit },
+                    colorGradientBackground = TmrColors.offButtonGradient,
+                    colorIcon = colorIconExit,
+                    isExitButton = true
                 )
             }
 
         }
-        TimeDisplay(
-            modifier = Modifier.padding(bottom = 50.dp),
-            valueSecond = (currentTime / 1000L).toInt(),
-        )
-        Box(
+
+        DoubleButtons(
             modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 52.dp),
-        ) {
-            DoubleButtons(
-                isTimerRunning = isTimerRunning,
-                currentTime = currentTime.toInt(),
-                onClickRightButton = {
+            isTimerRunning = isTimerRunning,
+            currentTime = currentTime.toInt(),
+            onClickRightButton = {
+                currentTime = totalTime
+                value = initialValue
+            },
+            onClickLeftButton = {
+                if (currentTime <= 0L) {
                     currentTime = totalTime
-                    value = initialValue
-                },
-                onClickLeftButton = {
-                    if (currentTime <= 0L) {
-                        currentTime = totalTime
-                        isTimerRunning = true
-                    } else {
-                        isTimerRunning = !isTimerRunning
-                    }
-                },
-            )
-        }
+                    isTimerRunning = true
+                } else {
+                    isTimerRunning = !isTimerRunning
+                }
+            }
+        )
     }
 }
