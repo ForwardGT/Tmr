@@ -1,8 +1,6 @@
 package app.core.ui.components
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -32,7 +30,7 @@ fun DoubleButtons(
                 else -> Res.drawable.start_timer
             }
         )
-        Spacer(modifier = Modifier.padding(start = 10.dp))
+        TmrSpacer(width = 10.dp)
         TmrButton(
             onClick = { onClickRightButton() },
             icon = Res.drawable.timeClear,

@@ -2,7 +2,6 @@ package tmr.impl.windows.main_window.shutdown_timer
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.*
@@ -17,6 +16,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import app.core.ui.components.DoubleButtons
 import app.core.ui.components.TimeDisplay
+import app.core.ui.components.TmrSpacer
 import app.core.ui.resourses.TmrColors
 import kotlinx.coroutines.delay
 
@@ -45,7 +45,8 @@ fun ShutdownTimer(
             .start()
     }
 
-    Spacer(modifier = Modifier.padding(top = 16.dp))
+    TmrSpacer(height = 16.dp)
+
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center,

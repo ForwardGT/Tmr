@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.core.ui.components.ExitButton
 import app.core.ui.components.TmrModeSwitchButton
+import app.core.ui.components.TmrSpacer
 import app.core.ui.resourses.TmrColors
 import app.core.utils.constant.Constants.BASE_URL_IMAGE
 import app.core.utils.remote_image.RemoteImage
@@ -63,7 +64,7 @@ private fun HeaderControlButton(
                 typeTimer = TypeTimer.WorkTimer,
                 activeButton = state.typeTimer,
             )
-            Spacer(modifier = Modifier.width(4.dp))
+            TmrSpacer(width = 4.dp)
             TmrModeSwitchButton(
                 onClick = { onSwitch(it) },
                 typeTimer = TypeTimer.ShutdownTimer,
@@ -93,23 +94,24 @@ private fun TimerSection(typeTimer: TypeTimer) {
 }
 
 @Composable
-private fun WeatherBlock(state: TmrState, modifier: Modifier = Modifier) {
+private fun WeatherBlock(
+    modifier: Modifier = Modifier,
+    state: TmrState,
+) {
+    val imageUrl = "$BASE_URL_IMAGE${state.weather.iconCode}@2x.png"
+
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 110.dp),
     ) {
-        val imageUrl = "$BASE_URL_IMAGE${state.weather.iconCode}@2x.png"
-
-        println("URI image weather: $imageUrl")
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
         ) {
             Text(
                 modifier = Modifier.padding(top = 22.dp),
-                text = "${state.weather.temperature}\u00B0C",
+                text = "${state.weather.temperature} \u00B0C",
                 fontSize = 20.sp,
                 color = TmrColors.mainText,
             )
