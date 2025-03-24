@@ -13,8 +13,8 @@ import app.core.ui.components.TmrSpacer
 import app.core.ui.resourses.TmrColors
 import app.core.utils.constant.Constants.BASE_URL_IMAGE
 import app.core.utils.remote_image.RemoteImage
-import org.example.project.main_window.work_timer.WorkTimer
 import tmr.impl.windows.main_window.shutdown_timer.ShutdownTimer
+import tmr.impl.windows.main_window.work_timer.WorkTimer
 
 @Composable
 fun MainView(

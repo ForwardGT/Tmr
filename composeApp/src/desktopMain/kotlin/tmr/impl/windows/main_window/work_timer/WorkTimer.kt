@@ -1,4 +1,4 @@
-package org.example.project.main_window.work_timer
+package tmr.impl.windows.main_window.work_timer
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Box
