@@ -25,10 +25,7 @@ import androidx.compose.ui.unit.sp
 import app.core.ui.resourses.TmrColors
 
 @Composable
-fun TmrTextField(
-    modifier: Modifier = Modifier,
-    submit: (String) -> Unit = {},
-) {
+fun TmrTextField(submit: (String) -> Unit = {}) {
     val (text, onValueChange) = remember { mutableStateOf("") }
 
     val focusRequester = remember { FocusRequester() }

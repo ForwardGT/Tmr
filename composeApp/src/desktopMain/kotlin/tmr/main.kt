@@ -53,7 +53,6 @@ fun main() = application {
                 state = state,
                 store = store,
             )
-
         }
     }
 }
