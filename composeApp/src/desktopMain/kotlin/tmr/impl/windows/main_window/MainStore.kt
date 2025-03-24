@@ -40,7 +40,7 @@ class MainStore(private val getWeatherUseCase: GetWeatherUseCase) : ViewModel() 
             while (true) {
                 val weather = getWeatherUseCase()
                 _state.reduce { copy(weather = weather) }
-                delay(600000)
+                delay(1000000)
             }
         }
     }
