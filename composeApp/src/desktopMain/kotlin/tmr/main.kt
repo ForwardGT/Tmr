@@ -1,8 +1,6 @@
 package tmr
 
 import androidx.compose.foundation.window.WindowDraggableArea
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -28,7 +26,6 @@ fun main() = application {
     }
 
     val store = koinInject<MainStore>()
-    val state by store.state.collectAsState()
 
     val appControl = koinInject<AppControl>()
     val config = appControl.loadConfig()
@@ -45,12 +42,11 @@ fun main() = application {
         alwaysOnTop = true,
         undecorated = true,
         transparent = true,
-        icon = painterResource(Res.drawable.logo)
+        icon = painterResource(Res.drawable.logo),
     ) {
         WindowDraggableArea {
             MainView(
                 closeApp = { appControl.closeWindow(windowState) },
-                state = state,
                 store = store,
             )
         }

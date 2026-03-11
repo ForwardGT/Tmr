@@ -1,6 +1,5 @@
 package tmr.impl.windows.main_window.work_timer
 
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
@@ -12,30 +11,27 @@ import androidx.compose.ui.unit.dp
 import app.core.ui.components.DoubleButtons
 import app.core.ui.components.TimeDisplay
 import app.core.ui.resourses.TmrColors
-import kotlinx.coroutines.delay
+import tmr.impl.windows.main_window.MainStore
+import tmr.impl.windows.main_window.StateTimerWorkManager
+import tmr.impl.windows.main_window.TmrState
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-@Preview
 @Composable
 fun WorkTimer(
     modifier: Modifier = Modifier,
     circleCount: Int = 20,
     radius: Float = 100f,
     dotSize: Float = 12f,
+    store: MainStore,
+    state: TmrState,
 ) {
     var activeIndex by remember { mutableStateOf(15) }
-    var isTimerRunning by remember { mutableStateOf(false) }
-    var currentTime by remember { mutableStateOf(0) }
 
-    LaunchedEffect(isTimerRunning) {
-        if (isTimerRunning) {
-            while (true) {
-                currentTime += 1
-                activeIndex = (activeIndex + 1) % circleCount
-                delay(1000)
-            }
+    if (state.currentWorkTime > 0) {
+        LaunchedEffect(state.currentWorkTime) {
+            activeIndex = (activeIndex + 1) % circleCount
         }
     }
 
@@ -66,17 +62,26 @@ fun WorkTimer(
 
         TimeDisplay(
             modifier = Modifier.padding(bottom = 50.dp).align(Alignment.Center),
-            valueSecond = currentTime,
+            valueSecond = state.currentWorkTime,
         )
 
         Box(
             modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 52.dp),
         ) {
             DoubleButtons(
-                onClickLeftButton = { isTimerRunning = !isTimerRunning },
-                onClickRightButton = { currentTime = 0; activeIndex = 15 },
-                isTimerRunning = isTimerRunning,
-                currentTime = currentTime,
+                onClickLeftButton = {
+                    if (!state.timerIsRunning) {
+                        store.startStopWorkTimer(StateTimerWorkManager.Start)
+                    } else {
+                        store.startStopWorkTimer(StateTimerWorkManager.Pause)
+                    }
+                },
+                onClickRightButton = {
+                    store.startStopWorkTimer(StateTimerWorkManager.Stop)
+                    activeIndex = 15
+                },
+                isTimerRunning = state.timerIsRunning,
+                currentTime = state.currentWorkTime,
             )
         }
     }

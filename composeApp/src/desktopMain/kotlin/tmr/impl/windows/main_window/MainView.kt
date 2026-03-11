@@ -3,6 +3,8 @@ package tmr.impl.windows.main_window
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,8 +22,9 @@ import tmr.impl.windows.main_window.work_timer.WorkTimer
 fun MainView(
     closeApp: () -> Unit = {},
     store: MainStore,
-    state: TmrState,
 ) {
+    val state by store.state.collectAsState()
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
@@ -40,7 +43,10 @@ fun MainView(
             lastUpdate = state.weather.lastUpdate,
             modifier = Modifier.align(Alignment.TopCenter)
         )
-        TimerSection(typeTimer = state.typeTimer)
+        TimerSection(
+            store = store,
+            state = state,
+        )
     }
 }
 
@@ -76,7 +82,10 @@ private fun HeaderControlButton(
 }
 
 @Composable
-private fun LastUpdateText(lastUpdate: String, modifier: Modifier) {
+private fun LastUpdateText(
+    lastUpdate: String,
+    modifier: Modifier,
+) {
     Text(
         modifier = modifier.padding(top = 60.dp),
         text = "Last update $lastUpdate",
@@ -86,10 +95,20 @@ private fun LastUpdateText(lastUpdate: String, modifier: Modifier) {
 }
 
 @Composable
-private fun TimerSection(typeTimer: TypeTimer) {
-    when (typeTimer) {
-        TypeTimer.WorkTimer -> WorkTimer(modifier = Modifier.size(250.dp))
-        TypeTimer.ShutdownTimer -> ShutdownTimer(modifier = Modifier.size(250.dp))
+private fun TimerSection(
+    store: MainStore,
+    state: TmrState,
+) {
+    when (state.typeTimer) {
+        TypeTimer.WorkTimer -> WorkTimer(
+            modifier = Modifier.size(250.dp),
+            store = store,
+            state = state,
+        )
+
+        TypeTimer.ShutdownTimer -> ShutdownTimer(
+            modifier = Modifier.size(250.dp),
+        )
     }
 }
 
