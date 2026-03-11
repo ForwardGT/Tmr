@@ -14,12 +14,15 @@ kotlin {
         val desktopMain by getting
 
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+
+            implementation("org.jetbrains.compose.runtime:runtime:1.10.2")
+            implementation("org.jetbrains.compose.foundation:foundation:1.10.2")
+            implementation("org.jetbrains.compose.material:material:1.10.2")
+            implementation("org.jetbrains.compose.ui:ui:1.10.2")
+
+            implementation("org.jetbrains.compose.components:components-resources:1.10.2")
+            implementation("org.jetbrains.compose.ui:ui-tooling:1.10.2")
+
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.ktor.client.core)
@@ -43,6 +46,13 @@ compose.desktop {
     application {
 
         mainClass = "tmr.MainKt"
+
+       /*
+       TODO
+        Пришлось указать хардкодом, ибо jlink и jpackage не были в JBR -
+        Градл JBR брал как таргет, хотя SDK была указана нормальная JDK21
+       */
+        javaHome = "C:\\Program Files\\Java\\jdk-21"
 
         nativeDistributions {
             targetFormats(TargetFormat.Exe)
