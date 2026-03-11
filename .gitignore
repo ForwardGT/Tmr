@@ -2,4 +2,5 @@
 /.gradle/
 /build/
 /composeApp/build/
-/composeApp/build/classes/kotlin/desktop/main/
+.idea/
+*.iml
