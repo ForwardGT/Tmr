@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.core.ui.resourses.TmrColors
+import app.core.ui.resourses.TmrShapes
 
 @Composable
 fun TmrTextField(submit: (String) -> Unit = {}) {
@@ -42,9 +42,9 @@ fun TmrTextField(submit: (String) -> Unit = {}) {
             textAlign = TextAlign.Center,
         ),
         modifier = Modifier
-            .size(60.dp, 30.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .border(2.dp, Color.Black, RoundedCornerShape(8.dp))
+            .size(width = 60.dp, height = 30.dp)
+            .clip(TmrShapes.shape8)
+            .border(2.dp, Color.Black, TmrShapes.shape8)
             .background(TmrColors.inactiveComponent)
             .padding(horizontal = 3.dp, vertical = 3.dp)
             .focusRequester(focusRequester)
