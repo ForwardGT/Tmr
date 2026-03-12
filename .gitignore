@@ -4,3 +4,5 @@
 /composeApp/build/
 .idea/
 *.iml
+/composeApp/app_config.json
+/.kotlin/
