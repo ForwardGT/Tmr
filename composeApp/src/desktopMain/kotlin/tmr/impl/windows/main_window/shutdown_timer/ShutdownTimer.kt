@@ -1,10 +1,10 @@
 package tmr.impl.windows.main_window.shutdown_timer
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
@@ -49,75 +49,88 @@ fun ShutdownTimer(
         contentAlignment = Alignment.Center,
     ) {
 
-        Canvas(modifier = Modifier.size(200.dp)) {
-            val size = size.copy(width = size.width, height = size.height)
-            drawArc(
-                color = TmrColors.inactiveComponent,
-                startAngle = -215f,
-                sweepAngle = 250f,
-                useCenter = false,
-                size = size,
-                style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
-            )
-            drawArc(
-                color = TmrColors.activeBar,
-                startAngle = -215f,
-                sweepAngle = 250f * value,
-                useCenter = false,
-                size = size,
-                style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
-            )
-        }
+        Box(
+            modifier = modifier.padding(16.dp)
+                .drawWithCache {
+                    onDrawBehind {
 
-        if (isEdit) {
-            Box(modifier = Modifier.padding(bottom = 50.dp)) {
-                TmrTextField { inputText ->
-                    totalTime = (inputText.toIntOrNull()?.times(60 * 1000L)) ?: totalTime
+                        val size = size.copy(width = size.width, height = size.height)
+
+                        drawArc(
+                            color = TmrColors.inactiveComponent,
+                            startAngle = -215f,
+                            sweepAngle = 250f,
+                            useCenter = false,
+                            size = size,
+                            style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
+                        )
+                        drawArc(
+                            color = TmrColors.activeBar,
+                            startAngle = -215f,
+                            sweepAngle = 250f * value,
+                            useCenter = false,
+                            size = size,
+                            style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
+                        )
+                    }
+                }
+        ) {
+            if (isEdit) {
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = 50.dp)
+                        .align(Alignment.Center),
+                ) {
+                    TmrTextField { inputText ->
+                        totalTime = (inputText?.toIntOrNull()?.times(60 * 1000L)) ?: totalTime
+                        currentTime = totalTime
+                        value = initialValue
+                        isEdit = false
+                    }
+                }
+
+            } else {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .padding(start = 14.dp)
+                        .align(Alignment.Center),
+                ) {
+                    TimeDisplay(
+                        modifier = Modifier.padding(bottom = 50.dp),
+                        valueSecond = (currentTime / 1000L).toInt()
+                    )
+
+                    TmrButton(
+                        modifier = Modifier.size(14.dp),
+                        text = "",
+                        icon = Res.drawable.gear,
+                        onClick = { isEdit = !isEdit },
+                        colorGradientBackground = TmrColors.offButtonGradient,
+                        colorIcon = colorIconExit,
+                        isExitButton = true
+                    )
+                }
+
+            }
+
+            DoubleButtons(
+                modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 30.dp),
+                isTimerRunning = isTimerRunning,
+                currentTime = currentTime.toInt(),
+                onClickRightButton = {
                     currentTime = totalTime
                     value = initialValue
-                    isEdit = false
+                },
+                onClickLeftButton = {
+                    if (currentTime <= 0L) {
+                        currentTime = totalTime
+                        isTimerRunning = true
+                    } else {
+                        isTimerRunning = !isTimerRunning
+                    }
                 }
-            }
-
-        } else {
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(start = 14.dp)
-            ) {
-                TimeDisplay(
-                    modifier = Modifier.padding(bottom = 50.dp),
-                    valueSecond = (currentTime / 1000L).toInt()
-                )
-
-                TmrButton(
-                    modifier = Modifier.size(14.dp),
-                    text = "",
-                    icon = Res.drawable.gear,
-                    onClick = { isEdit = !isEdit },
-                    colorGradientBackground = TmrColors.offButtonGradient,
-                    colorIcon = colorIconExit,
-                    isExitButton = true
-                )
-            }
-
+            )
         }
-
-        DoubleButtons(
-            modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 52.dp),
-            isTimerRunning = isTimerRunning,
-            currentTime = currentTime.toInt(),
-            onClickRightButton = {
-                currentTime = totalTime
-                value = initialValue
-            },
-            onClickLeftButton = {
-                if (currentTime <= 0L) {
-                    currentTime = totalTime
-                    isTimerRunning = true
-                } else {
-                    isTimerRunning = !isTimerRunning
-                }
-            }
-        )
     }
 }

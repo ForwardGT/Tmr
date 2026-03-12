@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.core.ui.resourses.TmrColors
 import app.core.ui.resourses.TmrShapes
+import app.core.utils.extensions.required
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -45,7 +46,9 @@ fun TmrButton(
             .clip(TmrShapes.shape12)
             .background(gradient)
             .clickable(onClick = onClick)
-            .then(if (!isExitButton) Modifier.padding(vertical = 8.dp, horizontal = 18.dp) else Modifier)
+            .required(!isExitButton) {
+                padding(vertical = 8.dp, horizontal = 18.dp)
+            }
     ) {
         if (icon == null) {
             Text(

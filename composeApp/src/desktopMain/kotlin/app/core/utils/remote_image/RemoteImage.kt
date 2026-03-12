@@ -16,6 +16,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.decodeToImageBitmap
 import java.net.URI
 
+// TODO Добавить Coil И убрать костыли
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun RemoteImage(url: String, modifier: Modifier = Modifier) {

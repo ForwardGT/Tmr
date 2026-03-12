@@ -25,7 +25,9 @@ import app.core.ui.resourses.TmrColors
 import app.core.ui.resourses.TmrShapes
 
 @Composable
-fun TmrTextField(submit: (String) -> Unit = {}) {
+fun TmrTextField(
+    submit: (String?) -> Unit = {},
+) {
     val (text, onValueChange) = remember { mutableStateOf("") }
 
     val focusRequester = remember { FocusRequester() }
@@ -35,7 +37,9 @@ fun TmrTextField(submit: (String) -> Unit = {}) {
 
     BasicTextField(
         value = text,
-        onValueChange = { onValueChange(it) },
+        onValueChange = {
+            onValueChange(it)
+        },
         textStyle = TextStyle(
             color = TmrColors.mainText,
             fontSize = 16.sp,
@@ -49,12 +53,22 @@ fun TmrTextField(submit: (String) -> Unit = {}) {
             .padding(horizontal = 3.dp, vertical = 3.dp)
             .focusRequester(focusRequester)
             .onKeyEvent { event ->
-                if (event.key == Key.Enter) {
-                    val cleanedText = text.trim()
-                    submit(cleanedText)
-                    onValueChange("")
-                    true
-                } else false
+                when (event.key) {
+                    Key.Enter -> {
+                        val text = text.trim()
+                        submit(text)
+                        onValueChange("")
+                        true
+                    }
+
+                    Key.Escape -> {
+                        onValueChange("")
+                        submit(null)
+                        true
+                    }
+
+                    else -> false
+                }
             },
     )
 }

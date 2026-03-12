@@ -101,13 +101,13 @@ private fun TimerSection(
 ) {
     when (state.typeTimer) {
         TypeTimer.WorkTimer -> WorkTimer(
-            modifier = Modifier.size(250.dp),
+            modifier = Modifier.size(238.dp),
             store = store,
             state = state,
         )
 
         TypeTimer.ShutdownTimer -> ShutdownTimer(
-            modifier = Modifier.size(250.dp),
+            modifier = Modifier.size(238.dp),
         )
     }
 }
