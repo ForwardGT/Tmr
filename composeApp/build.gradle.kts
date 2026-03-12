@@ -26,6 +26,10 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
 
+            implementation("io.coil-kt.coil3:coil-compose:3.4.0")
+            implementation("io.coil-kt.coil3:coil-network-ktor3:3.4.0")
+            implementation("io.ktor:ktor-client-java:3.4.0")
+
             implementation("ch.qos.logback:logback-classic:1.5.6")
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.cio)
@@ -38,6 +42,7 @@ kotlin {
             implementation(libs.koin.core.viewmodel)
             implementation(libs.koin.core)
         }
+
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)

@@ -8,4 +8,5 @@ data class Weather(
     val iconCode: String = "",
     val windSpeed: String = "",
     val lastUpdate: String = "",
+    val iconUrl: String = "",
 )
