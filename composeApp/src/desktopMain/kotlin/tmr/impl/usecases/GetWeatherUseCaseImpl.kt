@@ -10,9 +10,15 @@ class GetWeatherUseCaseImpl(
     private val repo: TmrRepository,
 ) : GetWeatherUseCase {
 
-    override suspend fun invoke(): Weather {
+    override suspend fun invoke(
+        latitude: String,
+        longitude: String,
+    ): Weather {
         return withContext(Dispatchers.IO) {
-            repo.getWeather()
+            repo.getWeather(
+                longitude = longitude,
+                latitude = latitude,
+            )
         }
     }
 }

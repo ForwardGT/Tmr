@@ -9,19 +9,25 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import tmr.api.models.UserLocation
 import tmr.api.models.Weather
+import tmr.api.usecases.GetUserLocationUseCase
 import tmr.api.usecases.GetWeatherUseCase
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 data class TmrState(
     val weather: Weather = Weather(),
+    val userLocation: UserLocation = UserLocation(),
     val typeTimer: TypeTimer = TypeTimer.WorkTimer,
     val currentWorkTime: Int = 0,
-    val timerIsRunning: Boolean = false,
-)
+    val stateTimerManager: StateTimerManager = StateTimerManager.Stop,
+    )
 
-class MainStore(private val getWeatherUseCase: GetWeatherUseCase) : ViewModel() {
+class MainStore(
+    private val getWeatherUseCase: GetWeatherUseCase,
+    private val getUserLocationUseCase: GetUserLocationUseCase,
+) : ViewModel() {
 
     private var timerJob: Job? = null
 
@@ -38,16 +44,16 @@ class MainStore(private val getWeatherUseCase: GetWeatherUseCase) : ViewModel() 
         }
     }
 
-    fun startStopWorkTimer(stateManager: StateTimerWorkManager) {
+    fun startStopWorkTimer(stateManager: StateTimerManager) {
         when (stateManager) {
 
-            StateTimerWorkManager.Start -> {
+            StateTimerManager.Start -> {
                 if (timerJob?.isActive == true) return
 
                 timerJob = viewModelScope.launch {
 
                     _state.reduce {
-                        copy(timerIsRunning = true)
+                        copy(stateTimerManager = StateTimerManager.Start)
                     }
 
                     while (isActive) {
@@ -60,18 +66,18 @@ class MainStore(private val getWeatherUseCase: GetWeatherUseCase) : ViewModel() 
                 }
             }
 
-            StateTimerWorkManager.Pause -> {
+            StateTimerManager.Pause -> {
                 _state.reduce {
-                    copy(timerIsRunning = false)
+                    copy(stateTimerManager = StateTimerManager.Pause)
                 }
                 timerJob?.cancel()
             }
 
-            StateTimerWorkManager.Stop -> {
+            StateTimerManager.Stop -> {
                 _state.reduce {
                     copy(
                         currentWorkTime = 0,
-                        timerIsRunning = false
+                        stateTimerManager = StateTimerManager.Stop
                     )
                 }
                 timerJob?.cancel()
@@ -81,8 +87,15 @@ class MainStore(private val getWeatherUseCase: GetWeatherUseCase) : ViewModel() 
 
     private fun getWeather() {
         viewModelScope.launch {
+
+            val userLocation = getUserLocationUseCase()
+            _state.reduce { copy(userLocation = userLocation) }
+
             while (true) {
-                val weather = getWeatherUseCase()
+                val weather = getWeatherUseCase(
+                    longitude = userLocation.longitude,
+                    latitude = userLocation.latitude,
+                )
                 _state.reduce { copy(weather = weather) }
                 delay(20.minutes)
             }
@@ -94,6 +107,6 @@ enum class TypeTimer {
     WorkTimer, ShutdownTimer
 }
 
-enum class StateTimerWorkManager {
+enum class StateTimerManager {
     Start, Stop, Pause
 }

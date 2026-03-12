@@ -4,5 +4,8 @@ import tmr.api.models.Weather
 
 interface GetWeatherUseCase {
 
-    suspend operator fun invoke(): Weather
+    suspend operator fun invoke(
+        latitude: String,
+        longitude: String,
+    ): Weather
 }
