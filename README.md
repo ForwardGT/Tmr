@@ -31,15 +31,15 @@
 
 ## Скриншоты 
 
-<div style="text-align:center;">
+<p align="center">
   <img src="https://github.com/user-attachments/assets/5b0d1d27-3134-4ed3-8475-5be191e61316" alt="Главный экран" width="30%" />
   <img src="https://github.com/user-attachments/assets/a28d33e8-dc73-4005-8068-1291546ee270" alt="Экран с информацией" width="27%" />
   <img src="https://github.com/user-attachments/assets/3eba84c3-690b-4801-824a-4f959b73ab1f" alt="Экран настроек" width="30%" />
-</div>
+</p>
 
 ## Демонстрация
 
-<div style="text-align:center;">
+<div align="center">
   <a>
     <video src="https://github.com/user-attachments/assets/c78824a9-bec5-425f-a403-5991d0e88bc7" controls width="70%"></video>
   </a>
