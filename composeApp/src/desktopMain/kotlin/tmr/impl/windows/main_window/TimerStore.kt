@@ -24,7 +24,7 @@ data class TmrState(
     val stateTimerManager: StateTimerManager = StateTimerManager.Stop,
     )
 
-class MainStore(
+class TimerStore(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getUserLocationUseCase: GetUserLocationUseCase,
 ) : ViewModel() {

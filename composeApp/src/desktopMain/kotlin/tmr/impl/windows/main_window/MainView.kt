@@ -10,22 +10,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.core.ui.components.ExitButton
+import app.core.ui.components.TmrButton
 import app.core.ui.components.TmrLoader
 import app.core.ui.components.TmrModeSwitchButton
 import app.core.ui.components.TmrSpacer
 import app.core.ui.resourses.TmrColors
+import app.core.ui.resourses.TmrColors.colorIconExit
 import app.core.utils.remote_image.TmrImage
 import kotlinx.coroutines.delay
+import org.koin.compose.viewmodel.koinViewModel
+import tmr.composeapp.generated.resources.Res
+import tmr.composeapp.generated.resources.exit
+import tmr.composeapp.generated.resources.gear
 import tmr.impl.windows.main_window.shutdown_timer.ShutdownTimer
 import tmr.impl.windows.main_window.work_timer.WorkTimer
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun MainView(
-    closeApp: () -> Unit = {},
-    store: MainStore,
+    onClickCloseApp: () -> Unit,
+    onClickOptions: () -> Unit,
 ) {
+    val store = koinViewModel<TimerStore>()
     val state by store.state.collectAsState()
 
     Box(
@@ -34,9 +40,10 @@ fun MainView(
     ) {
         HeaderControlButton(
             state = state,
-            onSwitch = store::switchTimer,
-            closeApp = closeApp,
-            modifier = Modifier.align(Alignment.TopCenter)
+            onClickSwitch = store::switchTimer,
+            onClickCloseApp = onClickCloseApp,
+            modifier = Modifier.align(Alignment.TopCenter),
+            onClickOptions = onClickOptions,
         )
         WeatherBlock(
             state = state,
@@ -56,10 +63,11 @@ fun MainView(
 
 @Composable
 private fun HeaderControlButton(
-    state: TmrState,
-    onSwitch: (TypeTimer) -> Unit,
-    closeApp: () -> Unit,
     modifier: Modifier = Modifier,
+    state: TmrState,
+    onClickSwitch: (TypeTimer) -> Unit,
+    onClickCloseApp: () -> Unit,
+    onClickOptions: () -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -70,18 +78,39 @@ private fun HeaderControlButton(
     ) {
         Row {
             TmrModeSwitchButton(
-                onClick = { onSwitch(it) },
+                onClick = { onClickSwitch(it) },
                 typeTimer = TypeTimer.WorkTimer,
                 activeButton = state.typeTimer,
             )
             TmrSpacer(width = 4.dp)
             TmrModeSwitchButton(
-                onClick = { onSwitch(it) },
+                onClick = { onClickSwitch(it) },
                 typeTimer = TypeTimer.ShutdownTimer,
                 activeButton = state.typeTimer,
             )
         }
-        ExitButton(closeApp)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            TmrButton(
+                modifier = Modifier.size(17.dp),
+                text = "",
+                icon = Res.drawable.gear,
+                onClick = { onClickOptions() },
+                colorGradientBackground = TmrColors.offButtonGradient,
+                colorIcon = colorIconExit,
+                isExitButton = true
+            )
+            TmrSpacer(width = 4.dp)
+            TmrButton(
+                text = "",
+                onClick = onClickCloseApp,
+                isExitButton = true,
+                icon = Res.drawable.exit,
+                colorGradientBackground = TmrColors.offButtonGradient,
+                colorIcon = colorIconExit,
+            )
+        }
     }
 }
 
@@ -127,7 +156,7 @@ private fun SwitchingText(
 
 @Composable
 private fun TimerSection(
-    store: MainStore,
+    store: TimerStore,
     state: TmrState,
 ) {
     when (state.typeTimer) {

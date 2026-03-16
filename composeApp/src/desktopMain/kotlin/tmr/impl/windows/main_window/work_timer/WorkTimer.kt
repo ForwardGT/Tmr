@@ -15,14 +15,14 @@ import androidx.compose.ui.unit.dp
 import app.core.ui.components.DoubleButtons
 import app.core.ui.components.TimeDisplay
 import app.core.ui.resourses.TmrColors
-import tmr.impl.windows.main_window.MainStore
+import tmr.impl.windows.main_window.TimerStore
 import tmr.impl.windows.main_window.StateTimerManager
 import tmr.impl.windows.main_window.TmrState
 
 @Composable
 fun WorkTimer(
     modifier: Modifier = Modifier,
-    store: MainStore,
+    store: TimerStore,
     state: TmrState,
 ) {
 

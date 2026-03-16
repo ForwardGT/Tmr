@@ -1,4 +1,4 @@
-package app.configurations
+package app.application.configurations
 
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.WindowState
@@ -15,15 +15,15 @@ interface AppControl {
 
 class AppControlImpl(private val applicationScope: ApplicationScope) : AppControl {
 
-    private val scope = CoroutineScope(Dispatchers.Default)
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     override fun closeWindow(windowState: WindowState) {
         scope.launch {
-            ConfigManager.saveConfig(windowState.position)
+            ConfigManagerrr.saveConfig(windowState.position)
         }
         applicationScope.exitApplication()
     }
 
-    override fun loadConfig() = ConfigManager.loadConfig()
+    override fun loadConfig() = ConfigManagerrr.loadConfig()
 
 }
