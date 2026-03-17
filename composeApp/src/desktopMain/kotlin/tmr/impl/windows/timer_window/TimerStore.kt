@@ -1,4 +1,4 @@
-package tmr.impl.windows.main_window
+package tmr.impl.windows.timer_window
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

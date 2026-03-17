@@ -6,6 +6,7 @@ import app.application.configurations.AppControlImpl
 import app.application.configurations.ConfigManager
 import app.application.configurations.ConfigManagerImpl
 import app.application.start_application.StartApplicationStore
+import app.core.window.WindowManager
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -19,7 +20,7 @@ import tmr.impl.repositories.TmrRepositoryImpl
 import tmr.impl.usecases.GetUserLocationUseCaseImpl
 import tmr.impl.usecases.GetWeatherUseCaseImpl
 import tmr.impl.usecases.SaveConfigurationsAppUseCaseImpl
-import tmr.impl.windows.main_window.TimerStore
+import tmr.impl.windows.timer_window.TimerStore
 
 object TmrKoin {
 
@@ -31,6 +32,7 @@ object TmrKoin {
         //Other
         single { applicationScope }
         singleOf(::AppControlImpl).bind<AppControl>()
+        singleOf(::WindowManager)
         singleOf(::ConfigManagerImpl).bind<ConfigManager>()
 
         //Usecases

@@ -1,4 +1,4 @@
-package tmr.impl.windows.main_window
+package tmr.impl.windows.timer_window.components
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
@@ -22,12 +22,13 @@ import org.koin.compose.viewmodel.koinViewModel
 import tmr.composeapp.generated.resources.Res
 import tmr.composeapp.generated.resources.exit
 import tmr.composeapp.generated.resources.gear
-import tmr.impl.windows.main_window.shutdown_timer.ShutdownTimer
-import tmr.impl.windows.main_window.work_timer.WorkTimer
+import tmr.impl.windows.timer_window.TimerStore
+import tmr.impl.windows.timer_window.TmrState
+import tmr.impl.windows.timer_window.TypeTimer
 import kotlin.time.Duration.Companion.seconds
 
 @Composable
-fun MainView(
+fun TimerView(
     onClickCloseApp: () -> Unit,
     onClickOptions: () -> Unit,
 ) {
@@ -160,13 +161,13 @@ private fun TimerSection(
     state: TmrState,
 ) {
     when (state.typeTimer) {
-        TypeTimer.WorkTimer -> WorkTimer(
+        TypeTimer.WorkTimer -> WorkTimerView(
             modifier = Modifier.size(238.dp),
             store = store,
             state = state,
         )
 
-        TypeTimer.ShutdownTimer -> ShutdownTimer(
+        TypeTimer.ShutdownTimer -> ShutdownTimerView(
             modifier = Modifier.size(238.dp),
         )
     }

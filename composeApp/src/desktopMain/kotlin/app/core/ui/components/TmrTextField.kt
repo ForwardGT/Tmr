@@ -1,4 +1,4 @@
-package tmr.impl.windows.main_window.shutdown_timer.components
+package app.core.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

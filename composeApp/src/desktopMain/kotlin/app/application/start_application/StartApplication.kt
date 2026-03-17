@@ -1,10 +1,10 @@
 package app.application.start_application
 
 import androidx.compose.runtime.Composable
-import org.koin.compose.koinInject
+import app.core.window.WindowHost
 
 @Composable
 fun StartApplication() {
-    val store = koinInject<StartApplicationStore>()
 
+    WindowHost()
 }

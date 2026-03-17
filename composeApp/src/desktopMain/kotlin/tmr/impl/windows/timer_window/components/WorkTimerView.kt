@@ -1,4 +1,4 @@
-package tmr.impl.windows.main_window.work_timer
+package tmr.impl.windows.timer_window.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -15,12 +15,12 @@ import androidx.compose.ui.unit.dp
 import app.core.ui.components.DoubleButtons
 import app.core.ui.components.TimeDisplay
 import app.core.ui.resourses.TmrColors
-import tmr.impl.windows.main_window.TimerStore
-import tmr.impl.windows.main_window.StateTimerManager
-import tmr.impl.windows.main_window.TmrState
+import tmr.impl.windows.timer_window.StateTimerManager
+import tmr.impl.windows.timer_window.TimerStore
+import tmr.impl.windows.timer_window.TmrState
 
 @Composable
-fun WorkTimer(
+fun WorkTimerView(
     modifier: Modifier = Modifier,
     store: TimerStore,
     state: TmrState,

@@ -13,17 +13,20 @@ interface AppControl {
     fun loadConfig(): AppConfig
 }
 
-class AppControlImpl(private val applicationScope: ApplicationScope) : AppControl {
+class AppControlImpl(
+    private val applicationScope: ApplicationScope,
+    private val configManager: ConfigManager,
+) : AppControl {
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
     override fun closeWindow(windowState: WindowState) {
         scope.launch {
-            ConfigManagerrr.saveConfig(windowState.position)
+            configManager.saveConfig(windowState.position)
         }
         applicationScope.exitApplication()
     }
 
-    override fun loadConfig() = ConfigManagerrr.loadConfig()
+    override fun loadConfig() = configManager.appConfig.value
 
 }

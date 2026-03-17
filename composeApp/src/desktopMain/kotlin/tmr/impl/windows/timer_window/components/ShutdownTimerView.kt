@@ -1,4 +1,4 @@
-package tmr.impl.windows.main_window.shutdown_timer
+package tmr.impl.windows.timer_window.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -12,15 +12,15 @@ import androidx.compose.ui.unit.dp
 import app.core.ui.components.DoubleButtons
 import app.core.ui.components.TimeDisplay
 import app.core.ui.components.TmrButton
+import app.core.ui.components.TmrTextField
 import app.core.ui.resourses.TmrColors
 import app.core.ui.resourses.TmrColors.colorIconExit
 import kotlinx.coroutines.delay
 import tmr.composeapp.generated.resources.Res
 import tmr.composeapp.generated.resources.gear
-import tmr.impl.windows.main_window.shutdown_timer.components.TmrTextField
 
 @Composable
-fun ShutdownTimer(
+fun ShutdownTimerView(
     modifier: Modifier = Modifier,
     initialValue: Float = 1f,
     strokeWidth: Dp = 5.dp,
