@@ -1,13 +1,10 @@
 package app.core.di
 
 import androidx.compose.ui.window.ApplicationScope
-import app.application.configurations.AppControl
-import app.application.configurations.AppControlImpl
 import app.application.configurations.ConfigManager
 import app.application.configurations.ConfigManagerImpl
-import app.application.start_application.StartApplicationStore
 import app.core.window.WindowManager
-import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.KoinApplication
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
@@ -24,14 +21,13 @@ import tmr.impl.windows.timer_window.TimerStore
 
 object TmrKoin {
 
-    fun initKoin(applicationScope: ApplicationScope) = startKoin {
+    fun KoinApplication.initKoin(applicationScope: ApplicationScope) {
         modules(appModule(applicationScope))
     }
 
     private fun appModule(applicationScope: ApplicationScope) = module {
         //Other
         single { applicationScope }
-        singleOf(::AppControlImpl).bind<AppControl>()
         singleOf(::WindowManager)
         singleOf(::ConfigManagerImpl).bind<ConfigManager>()
 
@@ -43,7 +39,5 @@ object TmrKoin {
         //ViewModels + repo
         viewModelOf(::TimerStore)
         singleOf(::TmrRepositoryImpl).bind<TmrRepository>()
-
-        viewModelOf(::StartApplicationStore)
     }
 }

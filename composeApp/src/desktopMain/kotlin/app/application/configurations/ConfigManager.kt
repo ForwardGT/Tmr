@@ -16,7 +16,6 @@ interface ConfigManager {
     val appConfig: StateFlow<AppConfig>
 
     suspend fun saveConfig(windowPosition: WindowPosition)
-
 }
 
 class ConfigManagerImpl : ConfigManager {

@@ -19,13 +19,14 @@ fun WindowHost() {
                         window = window,
                         windowManager = windowManager,
                     )
-
                 }
 
-                is AppWindow.Settings -> SettingsWindow(
-                    window = window,
-                    windowManager = windowManager,
-                )
+                is AppWindow.Settings -> {
+                    SettingsWindow(
+                        window = window,
+                        windowManager = windowManager,
+                    )
+                }
             }
         }
     }

@@ -5,15 +5,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.WindowState
-import app.application.configurations.AppControl
+import app.application.configurations.ConfigManager
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WindowManager(
-    private val appControl: AppControl,
     private val applicationScope: ApplicationScope,
+    private val configManager: ConfigManager,
 ) {
 
     private val _windows = mutableStateListOf<AppWindow>()
     val windows = _windows
+
+    private val scope = CoroutineScope(Dispatchers.IO + CoroutineExceptionHandler { _, e ->
+        println("WindowManager $e")
+    })
 
     init {
         initMainWindow()
@@ -30,19 +38,18 @@ class WindowManager(
     }
 
     fun exitApplication(windowState: WindowState) {
-        appControl.closeWindow(windowState)
-        applicationScope.exitApplication()
+        scope.launch {
+            configManager.saveConfig(windowState.position)
+            applicationScope.exitApplication()
+        }
     }
 
     private fun initMainWindow() {
-
-        val config = appControl.loadConfig()
-
         open(
             AppWindow.Timer(
                 position = WindowPosition(
-                    config.windowPositionX.dp,
-                    config.windowPositionY.dp,
+                    configManager.appConfig.value.windowPositionX.dp,
+                    configManager.appConfig.value.windowPositionY.dp,
                 )
             )
         )

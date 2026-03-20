@@ -61,7 +61,7 @@ fun WorkTimerView(
     }
 
     Box(
-        modifier = modifier.padding(16.dp)
+        modifier = modifier
             .drawWithCache {
                 val strokeWidth = 6.dp.toPx()
 
@@ -87,7 +87,7 @@ fun WorkTimerView(
         DoubleButtons(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 30.dp),
+                .padding(bottom = 24.dp),
             onClickLeftButton = {
                 if (state.stateTimerManager != StateTimerManager.Start) {
                     store.startStopWorkTimer(StateTimerManager.Start)

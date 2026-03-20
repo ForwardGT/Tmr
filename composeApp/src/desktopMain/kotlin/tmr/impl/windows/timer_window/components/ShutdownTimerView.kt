@@ -48,16 +48,15 @@ fun ShutdownTimerView(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-
         Box(
-            modifier = modifier.padding(16.dp)
+            modifier = modifier
                 .drawWithCache {
                     onDrawBehind {
 
                         val size = size.copy(width = size.width, height = size.height)
 
                         drawArc(
-                            color = TmrColors.inactiveComponent,
+                            color = TmrColors.inactiveBar,
                             startAngle = -215f,
                             sweepAngle = 250f,
                             useCenter = false,
@@ -115,7 +114,9 @@ fun ShutdownTimerView(
             }
 
             DoubleButtons(
-                modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 30.dp),
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 24.dp),
                 isTimerRunning = isTimerRunning,
                 currentTime = currentTime.toInt(),
                 onClickRightButton = {

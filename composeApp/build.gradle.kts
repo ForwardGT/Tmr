@@ -56,13 +56,6 @@ compose.desktop {
 
         mainClass = "tmr.MainKt"
 
-       /*
-       TODO
-        Пришлось указать хардкодом, ибо jlink и jpackage не были в JBR -
-        Градл JBR брал как таргет, хотя SDK была указана нормальная JDK21
-       */
-        javaHome = "C:\\Program Files\\Java\\jdk-21"
-
         nativeDistributions {
             targetFormats(TargetFormat.Exe)
             packageName = "tmr"

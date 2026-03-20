@@ -109,7 +109,11 @@ private fun RotatingCircle(
         }
 
         val resultPath = Path().apply {
-            op(mainCircle, clipCircle, PathOperation.Difference)
+            op(
+                path1 = mainCircle,
+                path2 = clipCircle,
+                operation = PathOperation.Difference
+            )
         }
 
         drawPath(

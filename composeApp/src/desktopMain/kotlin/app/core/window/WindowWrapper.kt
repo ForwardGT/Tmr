@@ -10,7 +10,7 @@ import tmr.composeapp.generated.resources.Res
 import tmr.composeapp.generated.resources.logo
 
 @Composable
-fun TmrWindowWrapper(
+fun WindowWrapper(
     windowManager: WindowManager,
     windowState: WindowState,
     window: AppWindow,

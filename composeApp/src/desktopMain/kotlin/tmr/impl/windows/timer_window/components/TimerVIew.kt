@@ -15,7 +15,6 @@ import app.core.ui.components.TmrLoader
 import app.core.ui.components.TmrModeSwitchButton
 import app.core.ui.components.TmrSpacer
 import app.core.ui.resourses.TmrColors
-import app.core.ui.resourses.TmrColors.colorIconExit
 import app.core.utils.remote_image.TmrImage
 import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
@@ -72,8 +71,7 @@ private fun HeaderControlButton(
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -99,7 +97,7 @@ private fun HeaderControlButton(
                 icon = Res.drawable.gear,
                 onClick = { onClickOptions() },
                 colorGradientBackground = TmrColors.offButtonGradient,
-                colorIcon = colorIconExit,
+                colorIcon = TmrColors.colorIconExit,
                 isExitButton = true
             )
             TmrSpacer(width = 4.dp)
@@ -109,7 +107,7 @@ private fun HeaderControlButton(
                 isExitButton = true,
                 icon = Res.drawable.exit,
                 colorGradientBackground = TmrColors.offButtonGradient,
-                colorIcon = colorIconExit,
+                colorIcon = TmrColors.colorIconExit,
             )
         }
     }
@@ -121,7 +119,6 @@ private fun SwitchingText(
     city: String,
     modifier: Modifier,
 ) {
-
     val texts = remember(lastUpdate, city) {
         listOf("Last update $lastUpdate", city)
     }
@@ -135,7 +132,7 @@ private fun SwitchingText(
     }
 
     AnimatedContent(
-        modifier = modifier.padding(top = 60.dp),
+        modifier = modifier.padding(top = 50.dp),
         targetState = texts[index],
         transitionSpec = {
             (fadeIn(animationSpec = tween(400, delayMillis = 50)) + scaleIn(
@@ -162,13 +159,13 @@ private fun TimerSection(
 ) {
     when (state.typeTimer) {
         TypeTimer.WorkTimer -> WorkTimerView(
-            modifier = Modifier.size(238.dp),
+            modifier = Modifier.size(210.dp),
             store = store,
             state = state,
         )
 
         TypeTimer.ShutdownTimer -> ShutdownTimerView(
-            modifier = Modifier.size(238.dp),
+            modifier = Modifier.size(210.dp),
         )
     }
 }
@@ -179,38 +176,31 @@ private fun WeatherBlock(
     state: TmrState,
 ) {
     if (state.weather.iconUrl.isNotEmpty()) {
-        Column(
+        Row(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = 110.dp),
+                .padding(top = 118.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                Text(
-                    modifier = Modifier.padding(top = 22.dp),
-                    text = "${state.weather.temperature} \u00B0C",
-                    fontSize = 20.sp,
-                    color = TmrColors.mainText,
-                )
-                TmrImage(
-                    modifier = Modifier.size(60.dp),
-                    model = state.weather.iconUrl,
-                )
-                Text(
-                    modifier = Modifier.padding(top = 22.dp),
-                    text = "${state.weather.windSpeed} m/s",
-                    fontSize = 20.sp,
-                    color = TmrColors.mainText,
-                )
-            }
+            Text(
+                //Todo Придумать чтото с иконками - приходят разного размера с апи.
+                modifier = Modifier.padding(start = 14.dp),
+                text = "${state.weather.temperature} \u00B0C , ${state.weather.windSpeed} m/s",
+                fontSize = 18.sp,
+                color = TmrColors.mainText,
+            )
+
+            TmrImage(
+                modifier = Modifier.size(50.dp),
+                model = state.weather.iconUrl,
+            )
         }
     } else {
         TmrLoader(
             modifier = Modifier
-                .padding(top = 30.dp)
-                .size(36.dp),
+                .padding(top = 34.dp)
+                .size(32.dp),
         )
     }
 }
