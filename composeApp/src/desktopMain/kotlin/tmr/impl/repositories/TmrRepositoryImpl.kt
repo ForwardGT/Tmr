@@ -6,7 +6,7 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import tmr.api.models.UserLocation
 import tmr.api.models.Weather
-import tmr.api.reposiroes.TmrRepository
+import tmr.api.repositories.TmrRepository
 import tmr.impl.data.responses.UserLocationResponse
 import tmr.impl.data.responses.WeatherResponse
 import tmr.impl.mappers.toData

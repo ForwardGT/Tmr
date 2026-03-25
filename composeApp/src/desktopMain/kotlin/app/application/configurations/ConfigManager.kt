@@ -40,7 +40,9 @@ class ConfigManagerImpl : ConfigManager {
             println("Json config file saved to path: $configFile")
         }
 
-        _appConfig.reduce { newConfig }
+        withContext(Dispatchers.Main) {
+            _appConfig.reduce { newConfig }
+        }
     }
 
     private fun loadConfig(): AppConfig {

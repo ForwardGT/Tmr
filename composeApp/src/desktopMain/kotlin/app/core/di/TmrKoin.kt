@@ -9,7 +9,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import tmr.api.reposiroes.TmrRepository
+import tmr.api.repositories.TmrRepository
 import tmr.api.usecases.GetUserLocationUseCase
 import tmr.api.usecases.GetWeatherUseCase
 import tmr.api.usecases.SaveConfigurationsAppUseCase
