@@ -13,6 +13,7 @@ import tmr.impl.windows.timer_window.components.TimerView
 fun TimerWindow(
     windowManager: WindowManager,
     window: AppWindow,
+    alwaysOnTop: Boolean = true,
 ) {
     val windowState = rememberWindowState(
         size = window.size,
@@ -23,6 +24,7 @@ fun TimerWindow(
         windowManager = windowManager,
         windowState = windowState,
         window = window,
+        alwaysOnTop = alwaysOnTop,
         content = {
             TimerView(
                 onClickCloseApp = {
@@ -43,4 +45,3 @@ fun TimerWindow(
         }
     )
 }
-

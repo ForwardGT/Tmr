@@ -39,7 +39,12 @@ class WindowManager(
 
     fun exitApplication(windowState: WindowState) {
         scope.launch {
-            configManager.saveConfig(windowState.position)
+            configManager.saveConfig {
+                copy(
+                    windowPositionX = windowState.position.x.value,
+                    windowPositionY = windowState.position.y.value,
+                )
+            }
             applicationScope.exitApplication()
         }
     }

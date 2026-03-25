@@ -1,6 +1,5 @@
 package app.application.configurations
 
-import androidx.compose.ui.window.WindowPosition
 import app.core.utils.extensions.reduce
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +14,7 @@ interface ConfigManager {
 
     val appConfig: StateFlow<AppConfig>
 
-    suspend fun saveConfig(windowPosition: WindowPosition)
+    suspend fun saveConfig(transform: AppConfig.() -> AppConfig)
 }
 
 class ConfigManagerImpl : ConfigManager {
@@ -26,14 +25,8 @@ class ConfigManagerImpl : ConfigManager {
     private val _appConfig = MutableStateFlow(loadConfig())
     override val appConfig: StateFlow<AppConfig> = _appConfig.asStateFlow()
 
-    override suspend fun saveConfig(
-        windowPosition: WindowPosition,
-    ) {
-
-        val newConfig = AppConfig(
-            windowPositionY = windowPosition.y.value,
-            windowPositionX = windowPosition.x.value,
-        )
+    override suspend fun saveConfig(transform: AppConfig.() -> AppConfig) {
+        val newConfig = _appConfig.value.transform()
 
         withContext(Dispatchers.IO) {
             configFile.writeText(Json.encodeToString(newConfig))

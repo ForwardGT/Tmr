@@ -17,6 +17,7 @@ import tmr.impl.repositories.TmrRepositoryImpl
 import tmr.impl.usecases.GetUserLocationUseCaseImpl
 import tmr.impl.usecases.GetWeatherUseCaseImpl
 import tmr.impl.usecases.SaveConfigurationsAppUseCaseImpl
+import tmr.impl.windows.setting_window.SettingsStore
 import tmr.impl.windows.timer_window.TimerStore
 
 object TmrKoin {
@@ -38,6 +39,7 @@ object TmrKoin {
 
         //ViewModels + repo
         viewModelOf(::TimerStore)
+        viewModelOf(::SettingsStore)
         singleOf(::TmrRepositoryImpl).bind<TmrRepository>()
     }
 }

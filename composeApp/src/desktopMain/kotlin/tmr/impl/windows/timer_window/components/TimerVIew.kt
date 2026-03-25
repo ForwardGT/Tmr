@@ -3,7 +3,6 @@ package tmr.impl.windows.timer_window.components
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +13,7 @@ import app.core.ui.components.TmrButton
 import app.core.ui.components.TmrLoader
 import app.core.ui.components.TmrModeSwitchButton
 import app.core.ui.components.TmrSpacer
+import app.core.ui.components.TmrText
 import app.core.ui.resourses.TmrColors
 import app.core.utils.remote_image.TmrImage
 import kotlinx.coroutines.delay
@@ -143,11 +143,10 @@ private fun SwitchingText(
         label = "switchText"
     ) { text ->
 
-        Text(
+        TmrText(
             text = text,
             textAlign = TextAlign.Center,
-            fontSize = 16.sp,
-            color = TmrColors.mainText.copy(alpha = .25f),
+            alpha = .25f,
         )
     }
 }
@@ -183,12 +182,11 @@ private fun WeatherBlock(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
+            TmrText(
                 //Todo Придумать чтото с иконками - приходят разного размера с апи.
                 modifier = Modifier.padding(start = 14.dp),
                 text = "${state.weather.temperature} \u00B0C , ${state.weather.windSpeed} m/s",
                 fontSize = 18.sp,
-                color = TmrColors.mainText,
             )
 
             TmrImage(

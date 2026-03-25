@@ -6,4 +6,5 @@ import kotlinx.serialization.Serializable
 data class AppConfig(
     val windowPositionX: Float = 11f,
     val windowPositionY: Float = 11f,
+    val alwaysOnTop: Boolean = true,
 )
