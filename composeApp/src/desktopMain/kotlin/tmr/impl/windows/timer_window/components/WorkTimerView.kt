@@ -1,4 +1,4 @@
-package tmr.impl.windows.main_window.work_timer
+package tmr.impl.windows.timer_window.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -14,15 +14,15 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import app.core.ui.components.DoubleButtons
 import app.core.ui.components.TimeDisplay
-import app.core.ui.resourses.TmrColors
-import tmr.impl.windows.main_window.MainStore
-import tmr.impl.windows.main_window.StateTimerManager
-import tmr.impl.windows.main_window.TmrState
+import app.core.ui.resources.TmrColors
+import tmr.impl.windows.timer_window.StateTimerManager
+import tmr.impl.windows.timer_window.TimerStore
+import tmr.impl.windows.timer_window.TmrState
 
 @Composable
-fun WorkTimer(
+fun WorkTimerView(
     modifier: Modifier = Modifier,
-    store: MainStore,
+    store: TimerStore,
     state: TmrState,
 ) {
 
@@ -61,7 +61,7 @@ fun WorkTimer(
     }
 
     Box(
-        modifier = modifier.padding(16.dp)
+        modifier = modifier
             .drawWithCache {
                 val strokeWidth = 6.dp.toPx()
 
@@ -87,7 +87,7 @@ fun WorkTimer(
         DoubleButtons(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(bottom = 30.dp),
+                .padding(bottom = 24.dp),
             onClickLeftButton = {
                 if (state.stateTimerManager != StateTimerManager.Start) {
                     store.startStopWorkTimer(StateTimerManager.Start)

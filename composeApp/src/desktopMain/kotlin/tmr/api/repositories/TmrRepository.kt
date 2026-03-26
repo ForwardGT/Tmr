@@ -1,4 +1,4 @@
-package tmr.api.reposiroes
+package tmr.api.repositories
 
 import tmr.api.models.UserLocation
 import tmr.api.models.Weather

@@ -3,7 +3,7 @@ package tmr.impl.usecases
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import tmr.api.models.Weather
-import tmr.api.reposiroes.TmrRepository
+import tmr.api.repositories.TmrRepository
 import tmr.api.usecases.GetWeatherUseCase
 
 class GetWeatherUseCaseImpl(

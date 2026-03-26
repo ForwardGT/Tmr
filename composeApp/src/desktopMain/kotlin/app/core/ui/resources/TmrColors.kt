@@ -1,4 +1,4 @@
-package app.core.ui.resourses
+package app.core.ui.resources
 
 import androidx.compose.ui.graphics.Color
 
@@ -7,6 +7,8 @@ object TmrColors {
     //Colors
     val inactiveComponent = Color.DarkGray.copy(.8f)
     val activeBar = Color(0xff00fff2)
+    val activeSwitch = Color(0xff00fff2).copy(alpha = 0.7f)
+    val inactiveBar = activeBar.copy(alpha = 0.1f)
     val mainText = Color(0xffe6d1fb)
     val colorIconExit = Color(0xffd8c7c7).copy(.8f)
 
