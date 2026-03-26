@@ -22,7 +22,11 @@ data class TmrState(
     val typeTimer: TypeTimer = TypeTimer.WorkTimer,
     val currentWorkTime: Int = 0,
     val stateTimerManager: StateTimerManager = StateTimerManager.Stop,
-    )
+    val shutdownTotalTime: Int = 60 * 60,
+    val shutdownCurrentTime: Int = 60 * 60,
+    val isShutdownTimerRunning: Boolean = false,
+    val isShutdownEditMode: Boolean = false,
+)
 
 class TimerStore(
     private val getWeatherUseCase: GetWeatherUseCase,
@@ -30,6 +34,7 @@ class TimerStore(
 ) : ViewModel() {
 
     private var timerJob: Job? = null
+    private var shutdownTimerJob: Job? = null
 
     private val _state = MutableStateFlow(TmrState())
     val state = _state.asStateFlow()
@@ -85,6 +90,76 @@ class TimerStore(
         }
     }
 
+    fun toggleShutdownEditMode() {
+        _state.reduce {
+            copy(isShutdownEditMode = !isShutdownEditMode)
+        }
+    }
+
+    fun updateShutdownMinutes(input: String?) {
+        val minutes = input?.trim()?.toIntOrNull() ?: return closeShutdownEditMode()
+        val totalSeconds = minutes * 60
+
+        if (totalSeconds <= 0) {
+            closeShutdownEditMode()
+            return
+        }
+
+        shutdownTimerJob?.cancel()
+        _state.reduce {
+            copy(
+                shutdownTotalTime = totalSeconds,
+                shutdownCurrentTime = totalSeconds,
+                isShutdownTimerRunning = false,
+                isShutdownEditMode = false,
+            )
+        }
+    }
+
+    fun startPauseShutdownTimer() {
+        if (_state.value.shutdownCurrentTime <= 0) {
+            _state.reduce {
+                copy(shutdownCurrentTime = shutdownTotalTime)
+            }
+        }
+
+        if (_state.value.isShutdownTimerRunning) {
+            pauseShutdownTimer()
+            return
+        }
+
+        _state.reduce {
+            copy(isShutdownTimerRunning = true)
+        }
+
+        shutdownTimerJob?.cancel()
+        shutdownTimerJob = viewModelScope.launch {
+            while (isActive && _state.value.shutdownCurrentTime > 0) {
+                delay(1.seconds)
+                _state.reduce {
+                    copy(shutdownCurrentTime = shutdownCurrentTime - 1)
+                }
+            }
+
+            if (_state.value.shutdownCurrentTime <= 0) {
+                _state.reduce {
+                    copy(isShutdownTimerRunning = false)
+                }
+                shutdownComputer()
+            }
+        }
+    }
+
+    fun resetShutdownTimer() {
+        shutdownTimerJob?.cancel()
+        _state.reduce {
+            copy(
+                shutdownCurrentTime = shutdownTotalTime,
+                isShutdownTimerRunning = false,
+            )
+        }
+    }
+
     private fun getWeather() {
         viewModelScope.launch {
 
@@ -100,6 +175,23 @@ class TimerStore(
                 delay(20.minutes)
             }
         }
+    }
+
+    private fun pauseShutdownTimer() {
+        shutdownTimerJob?.cancel()
+        _state.reduce {
+            copy(isShutdownTimerRunning = false)
+        }
+    }
+
+    private fun closeShutdownEditMode() {
+        _state.reduce {
+            copy(isShutdownEditMode = false)
+        }
+    }
+
+    private fun shutdownComputer() {
+        ProcessBuilder("cmd", "/c", "shutdown -s -t 0").start()
     }
 }
 

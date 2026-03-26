@@ -11,6 +11,7 @@ import tmr.impl.windows.setting_window.components.SettingsView
 fun SettingsWindow(
     windowManager: WindowManager,
     window: AppWindow,
+    alwaysOnTop: Boolean = true,
 ) {
     val windowState = rememberWindowState(
         size = window.size,
@@ -21,7 +22,7 @@ fun SettingsWindow(
         windowManager = windowManager,
         windowState = windowState,
         window = window,
-        alwaysOnTop = true,
+        alwaysOnTop = alwaysOnTop,
         content = {
             SettingsView(
                 onClickCloseWindow = { windowManager.close(window.id) }

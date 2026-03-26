@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import app.core.ui.resourses.TmrColors
+import app.core.ui.resources.TmrColors
 import tmr.impl.windows.timer_window.TypeTimer
 
 @Composable

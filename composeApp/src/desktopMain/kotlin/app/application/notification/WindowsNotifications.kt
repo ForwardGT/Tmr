@@ -8,16 +8,16 @@ object WindowsNotifications {
     private var trayIcon: TrayIcon? = null
 
     fun init() {
-        if (!SystemTray.isSupported()) return
+        if (!SystemTray.isSupported() || trayIcon != null) return
 
         val tray = SystemTray.getSystemTray()
-
         val image = BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB)
+        val newTrayIcon = TrayIcon(image, "Tmr")
 
-        trayIcon = TrayIcon(image, "Tmr")
-        trayIcon!!.isImageAutoSize = true  //TODO Переписать это говно
+        newTrayIcon.isImageAutoSize = true
 
-        tray.add(trayIcon)
+        tray.add(newTrayIcon)
+        trayIcon = newTrayIcon
     }
 
     fun notify(
@@ -26,17 +26,4 @@ object WindowsNotifications {
     ) {
         trayIcon?.displayMessage(title, message, TrayIcon.MessageType.INFO)
     }
-}
-
-private fun sample () {
-
-    // Не забыть инит сделать в application
-    WindowsNotifications.init()
-
-
-    // Вызов уведа
-    WindowsNotifications.notify(
-        "Tmr",
-        "Settings opened"
-    )
 }

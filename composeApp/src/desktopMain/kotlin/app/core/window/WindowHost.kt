@@ -31,6 +31,7 @@ fun WindowHost() {
                     SettingsWindow(
                         window = window,
                         windowManager = windowManager,
+                        alwaysOnTop = config.alwaysOnTop,
                     )
                 }
             }

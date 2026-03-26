@@ -21,8 +21,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.core.ui.resourses.TmrColors
-import app.core.ui.resourses.TmrShapes
+import app.core.ui.resources.TmrColors
+import app.core.ui.resources.TmrShapes
 
 @Composable
 fun TmrTextField(

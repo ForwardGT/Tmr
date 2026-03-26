@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.core.ui.components.TmrSwitch
 import app.core.ui.components.TmrText
-import app.core.ui.resourses.TmrColors
-import app.core.ui.resourses.TmrShapes
+import app.core.ui.resources.TmrColors
+import app.core.ui.resources.TmrShapes
 import app.core.utils.remote_image.TmrImage
 import org.koin.compose.viewmodel.koinViewModel
 import tmr.impl.windows.setting_window.SettingsStore
@@ -34,53 +34,76 @@ fun SettingsView(
         modifier = Modifier
             .fillMaxSize()
             .clip(TmrShapes.shape12)
-            .border(2.dp, TmrColors.inactiveBar, TmrShapes.shape12)
+            .border(2.dp, TmrColors.inactiveBar, TmrShapes.shape12),
     ) {
         TopControlWindowPanel(
             onClickCloseWindow = onClickCloseWindow
         )
 
-        TmrText(
-            text = "Settings",
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 12.dp, top = 8.dp, bottom = 4.dp),
-        )
-
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(horizontal = 12.dp, vertical = 6.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            TmrText(
-                text = "Always on top",
-                fontSize = 13.sp,
-            )
-            TmrSwitch(
+            ElementSettings(
+                label = "Always on top",
                 isChecked = config.alwaysOnTop,
                 onChangeChecked = store::toggleAlwaysOnTop,
+            )
+            ElementSettings(
+                label = "Enable notifications",
+                isChecked = config.notificationsEnabled,
+                onChangeChecked = store::toggleNotifications,
             )
         }
     }
 }
 
 @Composable
-fun TopControlWindowPanel(
+private fun ElementSettings(
+    label: String,
+    isChecked: Boolean,
+    onChangeChecked: (Boolean) -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        TmrText(
+            text = label,
+            fontSize = 13.sp,
+        )
+        TmrSwitch(
+            isChecked = isChecked,
+            onChangeChecked = onChangeChecked,
+        )
+    }
+}
+
+@Composable
+private fun TopControlWindowPanel(
     onClickCloseWindow: () -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(TmrColors.inactiveComponent)
+            .padding(horizontal = 6.dp, vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        Spacer(Modifier.weight(1f))
-        Box(
-            modifier = Modifier
-                .clickable(onClick = onClickCloseWindow)
-                .padding(2.dp),
-        ) {
+        TmrText(
+            text = "Settings",
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(start = 6.dp)
+        )
+
+        Box(modifier = Modifier.clickable(onClick = onClickCloseWindow)) {
             TmrImage(
                 modifier = Modifier.size(18.dp),
                 tintColor = TmrColors.colorIconExit,

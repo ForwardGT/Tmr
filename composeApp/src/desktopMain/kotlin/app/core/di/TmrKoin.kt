@@ -12,11 +12,9 @@ import org.koin.dsl.module
 import tmr.api.repositories.TmrRepository
 import tmr.api.usecases.GetUserLocationUseCase
 import tmr.api.usecases.GetWeatherUseCase
-import tmr.api.usecases.SaveConfigurationsAppUseCase
 import tmr.impl.repositories.TmrRepositoryImpl
 import tmr.impl.usecases.GetUserLocationUseCaseImpl
 import tmr.impl.usecases.GetWeatherUseCaseImpl
-import tmr.impl.usecases.SaveConfigurationsAppUseCaseImpl
 import tmr.impl.windows.setting_window.SettingsStore
 import tmr.impl.windows.timer_window.TimerStore
 
@@ -33,7 +31,6 @@ object TmrKoin {
         singleOf(::ConfigManagerImpl).bind<ConfigManager>()
 
         //Usecases
-        singleOf(::SaveConfigurationsAppUseCaseImpl).bind<SaveConfigurationsAppUseCase>()
         singleOf(::GetWeatherUseCaseImpl).bind<GetWeatherUseCase>()
         singleOf(::GetUserLocationUseCaseImpl).bind<GetUserLocationUseCase>()
 

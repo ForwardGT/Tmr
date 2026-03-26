@@ -16,4 +16,10 @@ class SettingsStore(
             configManager.saveConfig { copy(alwaysOnTop = enabled) }
         }
     }
+
+    fun toggleNotifications(enabled: Boolean) {
+        viewModelScope.launch {
+            configManager.saveConfig { copy(notificationsEnabled = enabled) }
+        }
+    }
 }

@@ -8,7 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
-import app.core.ui.resourses.TmrColors
+import app.core.ui.resources.TmrColors
 
 @Composable
 fun TmrText(

@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import app.core.ui.resourses.TmrColors
-import app.core.ui.resourses.TmrShapes
+import app.core.ui.resources.TmrColors
+import app.core.ui.resources.TmrShapes
 
 private object SwitchDefaults {
     const val DURATION_MILLIS = 250

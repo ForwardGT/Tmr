@@ -13,35 +13,23 @@ import app.core.ui.components.DoubleButtons
 import app.core.ui.components.TimeDisplay
 import app.core.ui.components.TmrButton
 import app.core.ui.components.TmrTextField
-import app.core.ui.resourses.TmrColors
-import app.core.ui.resourses.TmrColors.colorIconExit
-import kotlinx.coroutines.delay
+import app.core.ui.resources.TmrColors
+import app.core.ui.resources.TmrColors.colorIconExit
 import tmr.composeapp.generated.resources.Res
 import tmr.composeapp.generated.resources.gear
+import tmr.impl.windows.timer_window.TimerStore
+import tmr.impl.windows.timer_window.TmrState
 
 @Composable
 fun ShutdownTimerView(
     modifier: Modifier = Modifier,
-    initialValue: Float = 1f,
+    store: TimerStore,
+    state: TmrState,
     strokeWidth: Dp = 5.dp,
 ) {
-    var totalTime by remember { mutableStateOf(3600L * 1000L) }
-    var isEdit by remember { mutableStateOf(false) }
-    var currentTime by remember { mutableStateOf(totalTime) }
-    var isTimerRunning by remember { mutableStateOf(false) }
-    var value by remember { mutableStateOf(initialValue) }
-
-    LaunchedEffect(key1 = currentTime, key2 = isTimerRunning) {
-        if (currentTime > 0 && isTimerRunning) {
-            delay(100L)
-            currentTime -= 100L
-            value = currentTime / totalTime.toFloat()
-        }
-    }
-
-    if (currentTime == 0L) {
-        ProcessBuilder("cmd", "/c", "shutdown -s -t 0")
-            .start()
+    val progress = remember(state.shutdownCurrentTime, state.shutdownTotalTime) {
+        if (state.shutdownTotalTime == 0) 0f
+        else state.shutdownCurrentTime / state.shutdownTotalTime.toFloat()
     }
 
     Box(
@@ -66,7 +54,7 @@ fun ShutdownTimerView(
                         drawArc(
                             color = TmrColors.activeBar,
                             startAngle = -215f,
-                            sweepAngle = 250f * value,
+                            sweepAngle = 250f * progress,
                             useCenter = false,
                             size = size,
                             style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
@@ -74,18 +62,13 @@ fun ShutdownTimerView(
                     }
                 }
         ) {
-            if (isEdit) {
+            if (state.isShutdownEditMode) {
                 Box(
                     modifier = Modifier
                         .padding(bottom = 50.dp)
                         .align(Alignment.Center),
                 ) {
-                    TmrTextField { inputText ->
-                        totalTime = (inputText?.toIntOrNull()?.times(60 * 1000L)) ?: totalTime
-                        currentTime = totalTime
-                        value = initialValue
-                        isEdit = false
-                    }
+                    TmrTextField(submit = store::updateShutdownMinutes)
                 }
 
             } else {
@@ -97,14 +80,14 @@ fun ShutdownTimerView(
                 ) {
                     TimeDisplay(
                         modifier = Modifier.padding(bottom = 50.dp),
-                        valueSecond = (currentTime / 1000L).toInt()
+                        valueSecond = state.shutdownCurrentTime
                     )
 
                     TmrButton(
                         modifier = Modifier.size(14.dp),
                         text = "",
                         icon = Res.drawable.gear,
-                        onClick = { isEdit = !isEdit },
+                        onClick = store::toggleShutdownEditMode,
                         colorGradientBackground = TmrColors.offButtonGradient,
                         colorIcon = colorIconExit,
                         isExitButton = true
@@ -117,20 +100,10 @@ fun ShutdownTimerView(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 24.dp),
-                isTimerRunning = isTimerRunning,
-                currentTime = currentTime.toInt(),
-                onClickRightButton = {
-                    currentTime = totalTime
-                    value = initialValue
-                },
-                onClickLeftButton = {
-                    if (currentTime <= 0L) {
-                        currentTime = totalTime
-                        isTimerRunning = true
-                    } else {
-                        isTimerRunning = !isTimerRunning
-                    }
-                }
+                isTimerRunning = state.isShutdownTimerRunning,
+                currentTime = state.shutdownCurrentTime,
+                onClickRightButton = store::resetShutdownTimer,
+                onClickLeftButton = store::startPauseShutdownTimer,
             )
         }
     }

@@ -1,9 +1,25 @@
 package tmr.impl.windows.timer_window.components
 
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.togetherWith
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -14,7 +30,7 @@ import app.core.ui.components.TmrLoader
 import app.core.ui.components.TmrModeSwitchButton
 import app.core.ui.components.TmrSpacer
 import app.core.ui.components.TmrText
-import app.core.ui.resourses.TmrColors
+import app.core.ui.resources.TmrColors
 import app.core.utils.remote_image.TmrImage
 import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
@@ -70,8 +86,7 @@ private fun HeaderControlButton(
     onClickOptions: () -> Unit,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -142,7 +157,6 @@ private fun SwitchingText(
         },
         label = "switchText"
     ) { text ->
-
         TmrText(
             text = text,
             textAlign = TextAlign.Center,
@@ -165,6 +179,8 @@ private fun TimerSection(
 
         TypeTimer.ShutdownTimer -> ShutdownTimerView(
             modifier = Modifier.size(210.dp),
+            store = store,
+            state = state,
         )
     }
 }

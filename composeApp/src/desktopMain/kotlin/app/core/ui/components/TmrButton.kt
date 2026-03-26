@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import app.core.ui.resourses.TmrColors
-import app.core.ui.resourses.TmrShapes
+import app.core.ui.resources.TmrColors
+import app.core.ui.resources.TmrShapes
 import app.core.utils.extensions.required
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource

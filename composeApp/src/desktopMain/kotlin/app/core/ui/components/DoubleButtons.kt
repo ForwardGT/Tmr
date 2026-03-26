@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.core.ui.resourses.TmrColors
+import app.core.ui.resources.TmrColors
 import tmr.composeapp.generated.resources.Res
 import tmr.composeapp.generated.resources.pause_timer
 import tmr.composeapp.generated.resources.start_timer

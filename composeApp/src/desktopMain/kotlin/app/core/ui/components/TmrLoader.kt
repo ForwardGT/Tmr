@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import app.core.ui.resourses.TmrColors
+import app.core.ui.resources.TmrColors
 
 
 @Composable
