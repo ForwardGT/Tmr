@@ -2,11 +2,13 @@ package tmr.impl.windows.timer_window
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.application.configurations.ConfigManager
 import app.core.utils.extensions.reduce
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import tmr.api.models.UserLocation
@@ -31,6 +33,7 @@ data class TmrState(
 class TimerStore(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getUserLocationUseCase: GetUserLocationUseCase,
+    private val configManager: ConfigManager,
 ) : ViewModel() {
 
     private var timerJob: Job? = null
@@ -40,6 +43,8 @@ class TimerStore(
     val state = _state.asStateFlow()
 
     init {
+        applyDefaultShutdownTime(configManager.appConfig.value.defaultShutdownMinutes)
+        observeConfig()
         getWeather()
     }
 
@@ -119,7 +124,9 @@ class TimerStore(
     fun startPauseShutdownTimer() {
         if (_state.value.shutdownCurrentTime <= 0) {
             _state.reduce {
-                copy(shutdownCurrentTime = shutdownTotalTime)
+                copy(
+                    shutdownCurrentTime = shutdownTotalTime,
+                )
             }
         }
 
@@ -174,6 +181,25 @@ class TimerStore(
                 _state.reduce { copy(weather = weather) }
                 delay(20.minutes)
             }
+        }
+    }
+
+    private fun observeConfig() {
+        viewModelScope.launch {
+            configManager.appConfig.collectLatest { config ->
+                if (_state.value.isShutdownTimerRunning) return@collectLatest
+                applyDefaultShutdownTime(config.defaultShutdownMinutes)
+            }
+        }
+    }
+
+    private fun applyDefaultShutdownTime(defaultMinutes: Int) {
+        val totalSeconds = defaultMinutes.coerceIn(1, 720) * 60
+        _state.reduce {
+            copy(
+                shutdownTotalTime = totalSeconds,
+                shutdownCurrentTime = totalSeconds,
+            )
         }
     }
 

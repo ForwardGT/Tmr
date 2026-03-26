@@ -8,4 +8,5 @@ data class AppConfig(
     val windowPositionY: Float = 11f,
     val alwaysOnTop: Boolean = true,
     val notificationsEnabled: Boolean = false,
+    val defaultShutdownMinutes: Int = 60,
 )

@@ -22,4 +22,13 @@ class SettingsStore(
             configManager.saveConfig { copy(notificationsEnabled = enabled) }
         }
     }
+
+    fun updateDefaultShutdownMinutes(input: String?) {
+        val minutes = input?.trim()?.toIntOrNull() ?: return
+        if (minutes !in 1..720) return
+
+        viewModelScope.launch {
+            configManager.saveConfig { copy(defaultShutdownMinutes = minutes) }
+        }
+    }
 }
