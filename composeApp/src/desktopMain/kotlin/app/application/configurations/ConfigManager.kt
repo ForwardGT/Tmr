@@ -1,6 +1,7 @@
 package app.application.configurations
 
 import app.core.utils.extensions.reduce
+import app.core.utils.log.TmrLogger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +20,10 @@ interface ConfigManager {
 
 class ConfigManagerImpl : ConfigManager {
 
+    companion object {
+        private const val TAG = "ConfigManager"
+    }
+
     private val pathInstallApp = Paths.get("").toAbsolutePath().toString()
     private val configFile = File(pathInstallApp, "app_config.json")
 
@@ -28,10 +33,20 @@ class ConfigManagerImpl : ConfigManager {
     override suspend fun saveConfig(transform: AppConfig.() -> AppConfig) {
         val newConfig = _appConfig.value.transform()
 
-        withContext(Dispatchers.IO) {
-            configFile.writeText(Json.encodeToString(newConfig))
-            println("Json config file saved to path: $configFile")
+        val saveSuccess = withContext(Dispatchers.IO) {
+            runCatching {
+                configFile.writeText(Json.encodeToString(newConfig))
+            }
+                .onSuccess {
+                    TmrLogger.d(TAG, "Config saved to path: $configFile")
+                }
+                .onFailure { e ->
+                    TmrLogger.e(TAG, e, "Failed to save config")
+                }
+                .isSuccess
         }
+
+        if (!saveSuccess) return
 
         withContext(Dispatchers.Main) {
             _appConfig.reduce { newConfig }
@@ -42,7 +57,11 @@ class ConfigManagerImpl : ConfigManager {
         return if (configFile.exists())
             runCatching {
                 Json.decodeFromString<AppConfig>(configFile.readText())
-            }.getOrElse { AppConfig() }
+            }
+                .onFailure { e ->
+                    TmrLogger.e(TAG, e, "Failed to read config")
+                }
+                .getOrElse { AppConfig() }
         else AppConfig()
     }
 }

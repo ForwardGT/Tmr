@@ -3,6 +3,7 @@ package tmr.impl.windows.timer_window
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.application.configurations.ConfigManager
+import app.application.notification.WindowsNotifications
 import app.core.utils.extensions.reduce
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -38,6 +39,7 @@ class TimerStore(
 
     private var timerJob: Job? = null
     private var shutdownTimerJob: Job? = null
+    private var isFiveMinutesNotificationSent = false
 
     private val _state = MutableStateFlow(TmrState())
     val state = _state.asStateFlow()
@@ -111,6 +113,7 @@ class TimerStore(
         }
 
         shutdownTimerJob?.cancel()
+        isFiveMinutesNotificationSent = false
         _state.reduce {
             copy(
                 shutdownTotalTime = totalSeconds,
@@ -123,6 +126,7 @@ class TimerStore(
 
     fun startPauseShutdownTimer() {
         if (_state.value.shutdownCurrentTime <= 0) {
+            isFiveMinutesNotificationSent = false
             _state.reduce {
                 copy(
                     shutdownCurrentTime = shutdownTotalTime,
@@ -146,6 +150,7 @@ class TimerStore(
                 _state.reduce {
                     copy(shutdownCurrentTime = shutdownCurrentTime - 1)
                 }
+                notifyIfFiveMinutesBeforeShutdown()
             }
 
             if (_state.value.shutdownCurrentTime <= 0) {
@@ -159,6 +164,7 @@ class TimerStore(
 
     fun resetShutdownTimer() {
         shutdownTimerJob?.cancel()
+        isFiveMinutesNotificationSent = false
         _state.reduce {
             copy(
                 shutdownCurrentTime = shutdownTotalTime,
@@ -195,6 +201,7 @@ class TimerStore(
 
     private fun applyDefaultShutdownTime(defaultMinutes: Int) {
         val totalSeconds = defaultMinutes.coerceIn(1, 720) * 60
+        isFiveMinutesNotificationSent = false
         _state.reduce {
             copy(
                 shutdownTotalTime = totalSeconds,
@@ -218,6 +225,18 @@ class TimerStore(
 
     private fun shutdownComputer() {
         ProcessBuilder("cmd", "/c", "shutdown -s -t 0").start()
+    }
+
+    private fun notifyIfFiveMinutesBeforeShutdown() {
+        if (isFiveMinutesNotificationSent) return
+        if (!configManager.appConfig.value.notificationsEnabled) return
+        if (_state.value.shutdownCurrentTime > 5 * 60) return
+
+        WindowsNotifications.notify(
+            title = "Tmr",
+            message = "5 minutes left before shutdown",
+        )
+        isFiveMinutesNotificationSent = true
     }
 }
 

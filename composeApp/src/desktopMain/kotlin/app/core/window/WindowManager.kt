@@ -6,6 +6,7 @@ import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.WindowState
 import app.application.configurations.ConfigManager
+import app.core.utils.log.TmrLogger
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,12 +16,11 @@ class WindowManager(
     private val applicationScope: ApplicationScope,
     private val configManager: ConfigManager,
 ) {
-
     private val _windows = mutableStateListOf<AppWindow>()
     val windows = _windows
 
     private val scope = CoroutineScope(Dispatchers.IO + CoroutineExceptionHandler { _, e ->
-        println("WindowManager $e")
+        TmrLogger.e("WindowManager", e, "Unhandled scope error")
     })
 
     init {
