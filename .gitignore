@@ -6,3 +6,4 @@
 *.iml
 /composeApp/app_config.json
 /.kotlin/
+/.editorconfig
