@@ -3,7 +3,14 @@ package tmr.impl.windows.setting_window.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.Composable
@@ -25,10 +32,10 @@ import app.core.utils.remote_image.TmrImage
 import org.koin.compose.viewmodel.koinViewModel
 import tmr.impl.windows.setting_window.SettingsStore
 
-private const val LABEL_ALWAYS_ON_TOP = "Always on top"
-private const val LABEL_ENABLE_NOTIFICATIONS = "Enable notifications"
-private const val LABEL_SETTINGS_TITLE = "Settings"
-private const val LABEL_DEFAULT_SHUTDOWN_MINUTES = "Default shutdown min"
+private const val LABEL_ALWAYS_ON_TOP = "Поверх окон"
+private const val LABEL_ENABLE_NOTIFICATIONS = "Показывать уведомления"
+private const val LABEL_SETTINGS_TITLE = "Настройки"
+private const val LABEL_DEFAULT_SHUTDOWN_MINUTES = "Время до выключения"
 
 @Composable
 fun SettingsView(
@@ -43,9 +50,7 @@ fun SettingsView(
             .clip(TmrShapes.shape12)
             .border(2.dp, TmrColors.inactiveBar, TmrShapes.shape12),
     ) {
-        TopControlWindowPanel(
-            onClickCloseWindow = onClickCloseWindow
-        )
+        TopControlWindowPanel(onClickCloseWindow = onClickCloseWindow)
 
         Column(
             modifier = Modifier
@@ -144,7 +149,11 @@ private fun TopControlWindowPanel(
             modifier = Modifier.padding(start = 6.dp)
         )
 
-        Box(modifier = Modifier.clickable(onClick = onClickCloseWindow)) {
+        Box(
+            modifier = Modifier
+                .clip(TmrShapes.shape12)
+                .clickable(onClick = onClickCloseWindow)
+        ) {
             TmrImage(
                 modifier = Modifier.size(18.dp),
                 tintColor = TmrColors.colorIconExit,

@@ -1,11 +1,11 @@
 package tmr.impl.windows.timer_window.components
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.togetherWith
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -195,18 +195,17 @@ private fun WeatherBlock(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(top = 118.dp),
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically
         ) {
             TmrText(
-                //Todo Придумать чтото с иконками - приходят разного размера с апи.
                 modifier = Modifier.padding(start = 14.dp),
                 text = "${state.weather.temperature} \u00B0C , ${state.weather.windSpeed} m/s",
                 fontSize = 18.sp,
             )
 
             TmrImage(
-                modifier = Modifier.size(50.dp),
+                modifier = Modifier.size(46.dp),
                 model = state.weather.iconUrl,
             )
         }
