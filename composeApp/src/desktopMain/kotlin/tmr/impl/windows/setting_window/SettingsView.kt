@@ -1,11 +1,9 @@
-package tmr.impl.windows.setting_window.components
+package tmr.impl.windows.setting_window
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -13,21 +11,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import app.core.ui.components.TmrSwitch
-import app.core.ui.components.TmrText
-import app.core.ui.components.TmrTextField
 import app.core.ui.resources.TmrColors
 import app.core.ui.resources.TmrShapes
 import org.koin.compose.viewmodel.koinViewModel
-import tmr.impl.windows.setting_window.SettingsStore
+import tmr.impl.windows.setting_window.components.ElementSettings
+import tmr.impl.windows.setting_window.components.ElementSettingsTextField
+import tmr.impl.windows.setting_window.components.ElementSettingsTimerDesign
+import tmr.impl.windows.setting_window.components.TopControlWindowPanel
 
 private const val LABEL_ALWAYS_ON_TOP = "Поверх окон"
 private const val LABEL_ENABLE_NOTIFICATIONS = "Показывать уведомления"
 private const val LABEL_DEFAULT_SHUTDOWN_MINUTES = "Время до выключения"
-private const val LABEL_TIMER_DESIGN = "Вид таймера"
+private const val LABEL_TIMER_DESIGN = "Тема таймера"
 
 @Composable
 fun SettingsView(
@@ -72,58 +68,6 @@ fun SettingsView(
                 selectedDesign = config.timerDesign,
                 onSelectDesign = store::updateTimerDesign,
             )
-        }
-    }
-}
-
-@Composable
-private fun ElementSettings(
-    label: String,
-    isChecked: Boolean,
-    onChangeChecked: (Boolean) -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        TmrText(
-            text = label,
-            fontSize = 13.sp,
-        )
-        TmrSwitch(
-            isChecked = isChecked,
-            onChangeChecked = onChangeChecked,
-        )
-    }
-}
-
-@Composable
-private fun ElementSettingsTextField(
-    label: String,
-    value: Int,
-    onSubmit: (String?) -> Unit,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        TmrText(
-            text = label,
-            fontSize = 13.sp,
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-        ) {
-            TmrText(
-                text = value.toString(),
-                textAlign = TextAlign.End,
-                fontSize = 13.sp,
-            )
-            TmrTextField(submit = onSubmit)
         }
     }
 }

@@ -1,4 +1,4 @@
-package tmr.impl.windows.timer_window.components
+package tmr.impl.windows.timer_window.work_timer.components
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
@@ -19,7 +19,9 @@ import app.core.ui.resources.TmrColors
 import tmr.impl.windows.timer_window.StateTimerManager
 import tmr.impl.windows.timer_window.TimerStore
 import tmr.impl.windows.timer_window.TmrState
+import tmr.impl.windows.timer_window.work_timer.WorkTimerButtons
 import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -94,7 +96,7 @@ internal fun WorkTimerFocusDesign(
                         y = center.y + rPointOuter * sin(angle).toFloat(),
                     )
                     val dotAlpha = if (isAnimating) {
-                        val rawDistance = kotlin.math.abs(i - pointPhase)
+                        val rawDistance = abs(i - pointPhase)
                         val distance = minOf(rawDistance, dotCount - rawDistance)
                         val lock = 1f - (distance / 3.1f).coerceIn(0f, 1f)
                         0.12f + lock * (0.34f + 0.28f * pulse)
@@ -165,7 +167,10 @@ internal fun WorkTimerFocusDesign(
             }
         }
     ) {
-        WorkCenterContent(state = state, modifier = Modifier.align(Alignment.Center))
+        WorkCenterContent(
+            modifier = Modifier.align(Alignment.Center),
+            state = state,
+        )
 
         WorkTimerButtons(
             modifier = Modifier

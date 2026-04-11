@@ -39,7 +39,7 @@ internal fun ElementSettingsTimerDesign(
         )
 
         TmrSelect(
-            modifier = Modifier.fillMaxWidth(0.55f),
+            modifier = Modifier.fillMaxWidth(0.54f),
             selectedLabel = selectedLabel,
             options = options,
             onSelect = onSelectDesign,

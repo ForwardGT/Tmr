@@ -1,4 +1,4 @@
-package tmr.impl.windows.timer_window.components
+package tmr.impl.windows.timer_window.work_timer.components
 
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.InfiniteTransition

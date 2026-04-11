@@ -1,4 +1,4 @@
-package tmr.impl.windows.timer_window.components
+package tmr.impl.windows.timer_window.shutdown_timer.components
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
@@ -17,7 +17,11 @@ import androidx.compose.ui.unit.dp
 import app.core.ui.resources.TmrColors
 import tmr.impl.windows.timer_window.TimerStore
 import tmr.impl.windows.timer_window.TmrState
+import tmr.impl.windows.timer_window.work_timer.components.animatedFloatOrDefault
+import tmr.impl.windows.timer_window.shutdown_timer.ShutdownButtons
+import tmr.impl.windows.timer_window.shutdown_timer.ShutdownCenterContent
 import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -98,7 +102,7 @@ internal fun ShutdownTimerFocusDesign(
                         y = center.y + radiusOuter * sin(angle).toFloat(),
                     )
                     val pointAlpha = if (isAnimating) {
-                        val rawDistance = kotlin.math.abs(i - pointPhase)
+                        val rawDistance = abs(i - pointPhase)
                         val distance = minOf(rawDistance, 24f - rawDistance)
                         val lock = 1f - (distance / 3.2f).coerceIn(0f, 1f)
                         0.14f + lock * (0.3f + 0.28f * pulse)

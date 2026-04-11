@@ -1,4 +1,4 @@
-package tmr.impl.windows.timer_window.components
+package tmr.impl.windows.timer_window.work_timer.components
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -15,6 +15,10 @@ import app.core.ui.resources.TmrColors
 import tmr.impl.windows.timer_window.StateTimerManager
 import tmr.impl.windows.timer_window.TimerStore
 import tmr.impl.windows.timer_window.TmrState
+import tmr.impl.windows.timer_window.components.drawRadarBlips
+import tmr.impl.windows.timer_window.components.drawRadarRingsAndCrosshair
+import tmr.impl.windows.timer_window.components.generateRadarBlips
+import tmr.impl.windows.timer_window.work_timer.WorkTimerButtons
 
 @Composable
 internal fun WorkTimerRadarDesign(
@@ -82,7 +86,10 @@ internal fun WorkTimerRadarDesign(
             }
         }
     ) {
-        WorkCenterContent(state = state, modifier = Modifier.align(Alignment.Center))
+        WorkCenterContent(
+            modifier = Modifier.align(Alignment.Center),
+            state = state,
+        )
 
         WorkTimerButtons(
             modifier = Modifier

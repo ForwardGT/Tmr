@@ -1,4 +1,4 @@
-package tmr.impl.windows.timer_window.components
+package tmr.impl.windows.timer_window.work_timer
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -9,13 +9,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import app.application.configurations.TimerDesign
-import app.core.ui.components.DoubleButtons
 import tmr.impl.windows.timer_window.StateTimerManager
 import tmr.impl.windows.timer_window.TimerStore
 import tmr.impl.windows.timer_window.TmrState
+import tmr.impl.windows.timer_window.components.TimerDoubleButtons
+import tmr.impl.windows.timer_window.work_timer.components.WorkTimerFocusDesign
+import tmr.impl.windows.timer_window.work_timer.components.WorkTimerMinimalDesign
+import tmr.impl.windows.timer_window.work_timer.components.WorkTimerRadarDesign
 
 @Composable
-fun WorkTimerView(
+fun WorkTimer(
     modifier: Modifier = Modifier,
     store: TimerStore,
     state: TmrState,
@@ -77,7 +80,7 @@ internal fun WorkTimerButtons(
     state: TmrState,
     store: TimerStore,
 ) {
-    DoubleButtons(
+    TimerDoubleButtons(
         modifier = modifier,
         onClickLeftButton = { onWorkPrimaryAction(store, state.stateTimerManager) },
         onClickRightButton = { store.startStopWorkTimer(StateTimerManager.Stop) },

@@ -1,9 +1,11 @@
-package app.core.ui.components
+package tmr.impl.windows.timer_window.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import app.core.ui.components.TmrButton
+import app.core.ui.components.TmrSpacer
 import app.core.ui.resources.TmrColors
 import tmr.composeapp.generated.resources.Res
 import tmr.composeapp.generated.resources.pause_timer
@@ -11,7 +13,7 @@ import tmr.composeapp.generated.resources.start_timer
 import tmr.composeapp.generated.resources.timeClear
 
 @Composable
-fun DoubleButtons(
+fun TimerDoubleButtons(
     modifier: Modifier = Modifier,
     isTimerRunning: Boolean,
     currentTime: Int,

@@ -1,4 +1,4 @@
-package tmr.impl.windows.timer_window.components
+package tmr.impl.windows.timer_window.shutdown_timer
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,12 +7,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import app.application.configurations.TimerDesign
-import app.core.ui.components.DoubleButtons
 import app.core.ui.components.TimeDisplay
 import app.core.ui.components.TmrButton
 import app.core.ui.components.TmrTextField
@@ -22,9 +20,13 @@ import tmr.composeapp.generated.resources.Res
 import tmr.composeapp.generated.resources.gear
 import tmr.impl.windows.timer_window.TimerStore
 import tmr.impl.windows.timer_window.TmrState
+import tmr.impl.windows.timer_window.shutdown_timer.components.ShutdownTimerFocusDesign
+import tmr.impl.windows.timer_window.shutdown_timer.components.ShutdownTimerMinimalDesign
+import tmr.impl.windows.timer_window.shutdown_timer.components.ShutdownTimerRadarDesign
+import tmr.impl.windows.timer_window.components.TimerDoubleButtons
 
 @Composable
-fun ShutdownTimerView(
+fun ShutdownTimer(
     modifier: Modifier = Modifier,
     store: TimerStore,
     state: TmrState,
@@ -67,7 +69,7 @@ internal fun ShutdownButtons(
     store: TimerStore,
     modifier: Modifier,
 ) {
-    DoubleButtons(
+    TimerDoubleButtons(
         modifier = modifier,
         isTimerRunning = state.isShutdownTimerRunning,
         currentTime = state.shutdownCurrentTime,

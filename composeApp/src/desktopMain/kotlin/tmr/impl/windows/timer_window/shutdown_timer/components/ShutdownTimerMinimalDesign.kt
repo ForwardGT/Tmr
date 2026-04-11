@@ -1,4 +1,4 @@
-package tmr.impl.windows.timer_window.components
+package tmr.impl.windows.timer_window.shutdown_timer.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import app.core.ui.resources.TmrColors
 import tmr.impl.windows.timer_window.TimerStore
 import tmr.impl.windows.timer_window.TmrState
+import tmr.impl.windows.timer_window.shutdown_timer.ShutdownButtons
+import tmr.impl.windows.timer_window.shutdown_timer.ShutdownCenterContent
 
 @Composable
 internal fun ShutdownTimerMinimalDesign(

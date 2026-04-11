@@ -15,11 +15,6 @@ internal data class RadarBlip(
     val radiusFactor: Float,
 )
 
-internal fun radarAngleRadians(
-    index: Int,
-    dialTicks: Int,
-): Double = ((index * (360f / dialTicks)) - 90f) * (PI / 180f)
-
 internal fun radarPoint(
     center: Offset,
     radius: Float,

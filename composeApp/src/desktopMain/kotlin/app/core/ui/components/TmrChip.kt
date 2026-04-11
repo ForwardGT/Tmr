@@ -60,7 +60,11 @@ fun TmrChip(
 private fun TmrChipPreview() {
     var selected by remember { mutableStateOf("minimal") }
 
-Row(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+    ) {
         TmrChip(
             modifier = Modifier.weight(1f),
             label = "Мини",

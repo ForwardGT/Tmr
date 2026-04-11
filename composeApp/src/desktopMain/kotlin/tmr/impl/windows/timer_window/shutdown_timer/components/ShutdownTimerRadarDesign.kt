@@ -1,4 +1,4 @@
-package tmr.impl.windows.timer_window.components
+package tmr.impl.windows.timer_window.shutdown_timer.components
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -15,6 +15,12 @@ import androidx.compose.ui.unit.dp
 import app.core.ui.resources.TmrColors
 import tmr.impl.windows.timer_window.TimerStore
 import tmr.impl.windows.timer_window.TmrState
+import tmr.impl.windows.timer_window.components.drawRadarBlips
+import tmr.impl.windows.timer_window.components.drawRadarRingsAndCrosshair
+import tmr.impl.windows.timer_window.components.generateRadarBlips
+import tmr.impl.windows.timer_window.shutdown_timer.ShutdownButtons
+import tmr.impl.windows.timer_window.shutdown_timer.ShutdownCenterContent
+import tmr.impl.windows.timer_window.work_timer.components.animatedFloatOrDefault
 
 @Composable
 internal fun ShutdownTimerRadarDesign(
@@ -60,7 +66,9 @@ internal fun ShutdownTimerRadarDesign(
         modifier = modifier.drawWithCache {
             val center = Offset(size.width / 2f, size.height / 2f)
             val radius = size.minDimension * 0.50f
-            val sweepTint = TmrColors.activeBar.copy(alpha = 0.1f + pulse * 0.2f + 0.05f * progress.coerceIn(0f, 1f))
+            val sweepTint = TmrColors.activeBar.copy(
+                alpha = 0.1f + pulse * 0.2f + 0.05f * progress.coerceIn(0f, 1f)
+            )
             val blips = generateRadarBlips(seed = 1337, count = 5)
 
             onDrawBehind {
