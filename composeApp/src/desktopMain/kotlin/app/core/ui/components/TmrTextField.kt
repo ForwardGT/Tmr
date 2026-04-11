@@ -19,6 +19,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.core.ui.resources.TmrColors
@@ -27,12 +28,15 @@ import app.core.ui.resources.TmrShapes
 @Composable
 fun TmrTextField(
     submit: (String?) -> Unit = {},
+    autoFocus: Boolean = false,
 ) {
     val (text, onValueChange) = remember { mutableStateOf("") }
 
     val focusRequester = remember { FocusRequester() }
-    LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
+    LaunchedEffect(autoFocus) {
+        if (autoFocus) {
+            focusRequester.requestFocus()
+        }
     }
 
     BasicTextField(
@@ -71,4 +75,10 @@ fun TmrTextField(
                 }
             },
     )
+}
+
+@Preview
+@Composable
+private fun TmrTextFieldPreview() {
+    TmrTextField(submit = {})
 }

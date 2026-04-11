@@ -5,7 +5,6 @@ import androidx.compose.ui.window.rememberWindowState
 import app.core.window.AppWindow
 import app.core.window.WindowManager
 import app.core.window.WindowWrapper
-import tmr.impl.windows.setting_window.components.SettingsView
 
 @Composable
 fun SettingsWindow(
