@@ -175,12 +175,14 @@ private fun TimerSection(
             modifier = Modifier.size(210.dp),
             store = store,
             state = state,
+            timerDesign = state.timerDesign,
         )
 
         TypeTimer.ShutdownTimer -> ShutdownTimerView(
             modifier = Modifier.size(210.dp),
             store = store,
             state = state,
+            timerDesign = state.timerDesign,
         )
     }
 }

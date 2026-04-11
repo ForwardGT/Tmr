@@ -12,6 +12,13 @@ object TmrColors {
     val mainText = Color(0xffe6d1fb)
     val colorIconExit = Color(0xffd8c7c7).copy(.8f)
 
+    //UI shades
+    val chipSelectedBackground = activeSwitch.copy(alpha = 0.35f)
+    val chipUnselectedBackground = inactiveComponent.copy(alpha = 0.4f)
+    val selectBackground = inactiveComponent.copy(alpha = 0.45f)
+    val radarCrosshair = inactiveBar.copy(alpha = 0.2f)
+    val focusInactiveTick = inactiveBar.copy(alpha = 0.14f)
+
     //Gradients
     val defaultButtonGradient = listOf(
         Color(0xFF6A11CB).copy(alpha = 0.7f),

@@ -3,6 +3,7 @@ package tmr.impl.windows.timer_window
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.application.configurations.ConfigManager
+import app.application.configurations.TimerDesign
 import app.application.notification.WindowsNotifications
 import app.core.utils.extensions.reduce
 import kotlinx.coroutines.Job
@@ -22,6 +23,7 @@ import kotlin.time.Duration.Companion.seconds
 data class TmrState(
     val weather: Weather = Weather(),
     val userLocation: UserLocation = UserLocation(),
+    val timerDesign: TimerDesign = TimerDesign.Minimal,
     val typeTimer: TypeTimer = TypeTimer.WorkTimer,
     val currentWorkTime: Int = 0,
     val stateTimerManager: StateTimerManager = StateTimerManager.Stop,
@@ -41,7 +43,9 @@ class TimerStore(
     private var shutdownTimerJob: Job? = null
     private var isFiveMinutesNotificationSent = false
 
-    private val _state = MutableStateFlow(TmrState())
+    private val _state = MutableStateFlow(
+        TmrState(timerDesign = configManager.appConfig.value.timerDesign)
+    )
     val state = _state.asStateFlow()
 
     init {
@@ -193,6 +197,7 @@ class TimerStore(
     private fun observeConfig() {
         viewModelScope.launch {
             configManager.appConfig.collectLatest { config ->
+                _state.reduce { copy(timerDesign = config.timerDesign) }
                 if (_state.value.isShutdownTimerRunning) return@collectLatest
                 applyDefaultShutdownTime(config.defaultShutdownMinutes)
             }

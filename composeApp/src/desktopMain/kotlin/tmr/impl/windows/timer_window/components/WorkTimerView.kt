@@ -2,19 +2,14 @@ package tmr.impl.windows.timer_window.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.unit.dp
+import app.application.configurations.TimerDesign
 import app.core.ui.components.DoubleButtons
-import app.core.ui.components.TimeDisplay
-import app.core.ui.resources.TmrColors
 import tmr.impl.windows.timer_window.StateTimerManager
 import tmr.impl.windows.timer_window.TimerStore
 import tmr.impl.windows.timer_window.TmrState
@@ -24,13 +19,13 @@ fun WorkTimerView(
     modifier: Modifier = Modifier,
     store: TimerStore,
     state: TmrState,
+    timerDesign: TimerDesign,
 ) {
-
     val alpha = remember { Animatable(0.1f) }
+    val currentState by rememberUpdatedState(state.stateTimerManager)
 
     LaunchedEffect(state.stateTimerManager) {
         when (state.stateTimerManager) {
-
             StateTimerManager.Start -> {
                 alpha.animateTo(
                     targetValue = 1f,
@@ -39,68 +34,65 @@ fun WorkTimerView(
             }
 
             StateTimerManager.Pause -> {
-                while (true) {
-                    alpha.animateTo(
-                        targetValue = 0.1f,
-                        animationSpec = tween(1200),
-                    )
-                    alpha.animateTo(
-                        targetValue = 1f,
-                        animationSpec = tween(1200),
-                    )
+                while (currentState == StateTimerManager.Pause) {
+                    alpha.animateTo(targetValue = 0.1f, animationSpec = tween(1200))
+                    alpha.animateTo(targetValue = 1f, animationSpec = tween(1200))
                 }
             }
 
             StateTimerManager.Stop -> {
                 alpha.animateTo(
                     targetValue = 0.1f,
-                    animationSpec = tween(500)
+                    animationSpec = tween(500),
                 )
             }
         }
     }
 
-    Box(
-        modifier = modifier
-            .drawWithCache {
-                val strokeWidth = 6.dp.toPx()
-
-                onDrawBehind {
-                    drawArc(
-                        color = TmrColors.activeBar.copy(alpha = alpha.value),
-                        startAngle = 0f,
-                        sweepAngle = 360f,
-                        useCenter = false,
-                        style = Stroke(width = strokeWidth)
-                    )
-                }
-            }
-    ) {
-
-        TimeDisplay(
-            modifier = Modifier
-                .padding(bottom = 50.dp)
-                .align(Alignment.Center),
-            valueSecond = state.currentWorkTime,
+    when (timerDesign) {
+        TimerDesign.Minimal -> WorkTimerMinimalDesign(
+            modifier = modifier,
+            state = state,
+            store = store,
+            alpha = alpha.value,
         )
 
-        DoubleButtons(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 24.dp),
-            onClickLeftButton = {
-                if (state.stateTimerManager != StateTimerManager.Start) {
-                    store.startStopWorkTimer(StateTimerManager.Start)
-                } else {
-                    store.startStopWorkTimer(StateTimerManager.Pause)
-                }
-            },
-            onClickRightButton = {
-                store.startStopWorkTimer(StateTimerManager.Stop)
-            },
-            isTimerRunning = state.stateTimerManager == StateTimerManager.Start,
-            currentTime = state.currentWorkTime,
+        TimerDesign.Focus -> WorkTimerFocusDesign(
+            modifier = modifier,
+            state = state,
+            store = store,
         )
 
+        TimerDesign.Radar -> WorkTimerRadarDesign(
+            modifier = modifier,
+            state = state,
+            store = store,
+        )
+    }
+}
+
+@Composable
+internal fun WorkTimerButtons(
+    modifier: Modifier,
+    state: TmrState,
+    store: TimerStore,
+) {
+    DoubleButtons(
+        modifier = modifier,
+        onClickLeftButton = { onWorkPrimaryAction(store, state.stateTimerManager) },
+        onClickRightButton = { store.startStopWorkTimer(StateTimerManager.Stop) },
+        isTimerRunning = state.stateTimerManager == StateTimerManager.Start,
+        currentTime = state.currentWorkTime,
+    )
+}
+
+private fun onWorkPrimaryAction(
+    store: TimerStore,
+    stateTimerManager: StateTimerManager,
+) {
+    if (stateTimerManager != StateTimerManager.Start) {
+        store.startStopWorkTimer(StateTimerManager.Start)
+    } else {
+        store.startStopWorkTimer(StateTimerManager.Pause)
     }
 }
