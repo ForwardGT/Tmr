@@ -61,6 +61,12 @@ compose.desktop {
             packageName = "tmr"
             packageVersion = "1.0.0"
             modules("java.desktop")
+
+            windows {
+                iconFile.set(project.file("src/commonMain/composeResources/drawable/app_exe_logo.ico"))
+                menu = true
+                shortcut = true
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import org.jetbrains.compose.resources.painterResource
 import tmr.composeapp.generated.resources.Res
-import tmr.composeapp.generated.resources.logo
+import tmr.composeapp.generated.resources.app_icon
 
 @Composable
 fun WindowWrapper(
@@ -19,7 +19,7 @@ fun WindowWrapper(
     undecorated: Boolean = true,
     transparent: Boolean = true,
     title: String = "Tmr",
-    icon: Painter = painterResource(Res.drawable.logo),
+    icon: Painter = painterResource(Res.drawable.app_icon),
     content: @Composable () -> Unit,
 ) {
     Window(

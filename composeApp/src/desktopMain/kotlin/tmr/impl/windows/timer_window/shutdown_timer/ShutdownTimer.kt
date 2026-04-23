@@ -1,5 +1,8 @@
 package tmr.impl.windows.timer_window.shutdown_timer
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -36,14 +39,23 @@ fun ShutdownTimer(
     val progress = remember(state.shutdownCurrentTime, state.shutdownTotalTime) {
         if (state.shutdownTotalTime == 0) 0f
         else state.shutdownCurrentTime / state.shutdownTotalTime.toFloat()
-    }
+    }.coerceIn(0f, 1f)
+
+    val animatedProgress = animateFloatAsState(
+        targetValue = progress,
+        animationSpec = tween(
+            durationMillis = 1000,
+            easing = LinearEasing,
+        ),
+        label = "shutdown-progress",
+    )
 
     when (timerDesign) {
         TimerDesign.Minimal -> ShutdownTimerMinimalDesign(
             modifier = modifier,
             store = store,
             state = state,
-            progress = progress,
+            progress = animatedProgress.value,
             strokeWidth = strokeWidth,
         )
 
@@ -51,14 +63,14 @@ fun ShutdownTimer(
             modifier = modifier,
             store = store,
             state = state,
-            progress = progress,
+            progress = animatedProgress.value,
         )
 
         TimerDesign.Radar -> ShutdownTimerRadarDesign(
             modifier = modifier,
             store = store,
             state = state,
-            progress = progress,
+            progress = animatedProgress.value,
         )
     }
 }
